@@ -1,0 +1,25 @@
+name: Qodo PR-Agent Review
+
+on:
+  pull_request:
+    types: [opened, reopened, ready_for_review]
+  issue_comment:
+    types: [created, edited]
+
+jobs:
+  qodo_review:
+    name: Qodo AI Code Review
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
+    steps:
+      - name: Run Qodo PR-Agent
+        uses: Codium-ai/pr-agent@main
+        env:
+          OPENAI_KEY: ${{ secrets.OPENAI_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CONFIG.PR_REVIEWER.REQUIRE_CAN_BE_SPLIT_REVIEW: "true"
+          CONFIG.PR_REVIEWER.REQUIRE_SECURITY_REVIEW: "true"
+          CONFIG.PR_REVIEWER.REQUIRE_TESTS_REVIEW: "true"
