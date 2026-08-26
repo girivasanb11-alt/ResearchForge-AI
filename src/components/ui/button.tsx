@@ -1,44 +1,56 @@
-import * as React from "react";
+import { Button as ButtonPrimitive } from "@base-ui/react/button";
+import { cva, type VariantProps } from "class-variance-authority";
+
 import { cn } from "@/lib/utils";
 
-export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "default" | "secondary" | "outline" | "ghost" | "link" | "glow" | "destructive";
-  size?: "default" | "sm" | "lg" | "icon";
-}
-
-export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant = "default", size = "default", ...props }, ref) => {
-    const baseStyles =
-      "inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 active:scale-[0.98]";
-
-    const variants = {
-      default:
-        "bg-forge-500 text-white shadow-sm hover:bg-forge-600 shadow-indigo-500/25 hover:shadow-indigo-500/35 hover:shadow-md",
-      secondary:
-        "bg-secondary text-secondary-foreground hover:bg-secondary/80 border border-border/50",
-      outline:
-        "border border-border/80 bg-background/60 hover:bg-accent hover:text-accent-foreground backdrop-blur-sm",
-      ghost: "hover:bg-accent hover:text-accent-foreground",
-      link: "text-primary underline-offset-4 hover:underline",
-      glow: "relative bg-gradient-to-r from-indigo-500 via-purple-500 to-cyan-500 text-white shadow-lg shadow-indigo-500/20 hover:shadow-indigo-500/40 hover:opacity-95 font-semibold",
-      destructive:
-        "bg-destructive text-destructive-foreground hover:bg-destructive/90 shadow-sm",
-    };
-
-    const sizes = {
-      default: "h-9 px-4 py-2",
-      sm: "h-8 rounded-md px-3 text-xs",
-      lg: "h-11 rounded-lg px-6 text-base font-semibold",
-      icon: "h-9 w-9",
-    };
-
-    return (
-      <button
-        ref={ref}
-        className={cn(baseStyles, variants[variant], sizes[size], className)}
-        {...props}
-      />
-    );
+const buttonVariants = cva(
+  "group/button inline-flex shrink-0 items-center justify-center rounded-lg border border-transparent bg-clip-padding text-sm font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 cursor-pointer",
+  {
+    variants: {
+      variant: {
+        default: "bg-primary text-primary-foreground hover:bg-primary/80 shadow-sm",
+        outline:
+          "border-border/80 bg-background/60 hover:bg-muted hover:text-foreground backdrop-blur-sm",
+        secondary:
+          "bg-secondary text-secondary-foreground hover:bg-secondary/80 border border-border/50",
+        ghost:
+          "hover:bg-muted hover:text-foreground",
+        destructive:
+          "bg-destructive text-destructive-foreground hover:bg-destructive/90 shadow-sm",
+        link: "text-primary underline-offset-4 hover:underline",
+        glow: "relative bg-gradient-to-r from-indigo-500 via-purple-500 to-cyan-500 text-white shadow-lg shadow-indigo-500/20 hover:shadow-indigo-500/40 hover:opacity-95 font-semibold",
+      },
+      size: {
+        default: "h-9 gap-1.5 px-3.5",
+        xs: "h-6 gap-1 rounded-md px-2 text-xs",
+        sm: "h-8 gap-1.5 rounded-md px-3 text-xs",
+        lg: "h-11 gap-2 rounded-xl px-6 text-base font-semibold",
+        icon: "size-9",
+        "icon-xs": "size-6 rounded-md",
+        "icon-sm": "size-7 rounded-md",
+        "icon-lg": "size-10",
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+      size: "default",
+    },
   }
 );
-Button.displayName = "Button";
+
+function Button({
+  className,
+  variant = "default",
+  size = "default",
+  ...props
+}: ButtonPrimitive.Props & VariantProps<typeof buttonVariants>) {
+  return (
+    <ButtonPrimitive
+      data-slot="button"
+      className={cn(buttonVariants({ variant, size, className }))}
+      {...props}
+    />
+  );
+}
+
+export { Button, buttonVariants };
