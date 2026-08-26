@@ -3,16 +3,9 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import {
-  Compass,
   Search,
-  BookOpen,
-  Scale,
-  Building,
-  FileCode2,
   ExternalLink,
   ShieldCheck,
-  Filter,
-  ArrowRight,
 } from "lucide-react";
 import { SAMPLE_SOURCES } from "@/lib/sample-data";
 import { Badge } from "@/components/ui/badge";
@@ -131,7 +124,7 @@ export default function ExploreKnowledgePage() {
             </div>
 
             <p className="text-xs sm:text-sm text-muted-foreground bg-secondary/30 p-3.5 rounded-2xl border border-border/40 font-sans italic leading-relaxed">
-              "{source.snippet}"
+              &ldquo;{source.snippet}&rdquo;
             </p>
           </div>
         ))}
