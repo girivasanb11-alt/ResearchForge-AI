@@ -5,11 +5,8 @@ import {
   Github,
   GitBranch,
   Check,
-  Search,
-  ExternalLink,
   ShieldCheck,
   FolderGit2,
-  Sparkles,
   Link2,
 } from "lucide-react";
 import { Dialog, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";

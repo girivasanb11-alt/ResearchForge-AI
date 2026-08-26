@@ -7,10 +7,6 @@ import {
   CheckCircle2,
   Sparkles,
   BarChart2,
-  TrendingUp,
-  ExternalLink,
-  ChevronRight,
-  BookOpen,
 } from "lucide-react";
 import {
   BarChart,
@@ -30,16 +26,13 @@ import { cn } from "@/lib/utils";
 
 interface ReportBodyViewerProps {
   sections: ReportSection[];
-  sources: CitationSource[];
-  activeCitationId: string | null;
-  onSelectCitation: (id: string) => void;
+  sources?: CitationSource[];
+  activeCitationId?: string | null;
+  onSelectCitation?: (id: string) => void;
 }
 
 export function ReportBodyViewer({
   sections,
-  sources,
-  activeCitationId,
-  onSelectCitation,
 }: ReportBodyViewerProps) {
   const [activeSectionId, setActiveSectionId] = useState(sections[0]?.id || "");
 
@@ -100,7 +93,7 @@ export function ReportBodyViewer({
 
       {/* Main Document Body */}
       <div className="lg:col-span-9 space-y-12">
-        {sections.map((section, sIdx) => {
+        {sections.map((section) => {
           return (
             <section
               key={section.id}

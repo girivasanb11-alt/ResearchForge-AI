@@ -5,12 +5,10 @@ import {
   Download,
   FileText,
   FileCode2,
-  Share2,
   Copy,
   Check,
   Printer,
   Sparkles,
-  ExternalLink,
 } from "lucide-react";
 import { Dialog, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";

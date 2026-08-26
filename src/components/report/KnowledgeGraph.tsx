@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Share2, Info, Sparkles, Filter, ZoomIn, ZoomOut } from "lucide-react";
+import { Share2, Sparkles } from "lucide-react";
 import { KnowledgeGraphNode } from "@/lib/types";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";

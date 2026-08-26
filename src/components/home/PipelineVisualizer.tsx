@@ -4,18 +4,11 @@ import React, { useState } from "react";
 import {
   GitFork,
   Search,
-  CheckCircle2,
-  FileSpreadsheet,
   Terminal,
-  ArrowRight,
   ShieldAlert,
-  Cpu,
-  Layers,
-  Sparkles,
   Share2,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 export function PipelineVisualizer() {

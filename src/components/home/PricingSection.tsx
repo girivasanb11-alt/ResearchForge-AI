@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { Check, Sparkles, ArrowRight, Zap, ShieldCheck, Building } from "lucide-react";
+import { Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
@@ -119,7 +119,7 @@ export function PricingSection() {
             >
               {plan.popular && (
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                  <Badge variant="glow" className="bg-gradient-to-r from-indigo-500 to-cyan-500 text-white font-mono text-[10px] uppercase tracking-wider font-bold py-0.5 px-3 shadow-md">
+                  <Badge variant="secondary" className="bg-gradient-to-r from-indigo-500 to-cyan-500 text-white font-mono text-[10px] uppercase tracking-wider font-bold py-0.5 px-3 shadow-md">
                     Most Popular
                   </Badge>
                 </div>

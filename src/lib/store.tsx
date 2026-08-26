@@ -1,8 +1,8 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { ResearchReport, CitationSource, ResearchJob, ResearchDepth, ResearchScope } from "./types";
-import { SAMPLE_REPORTS, SAMPLE_SOURCES, MOCK_EXECUTION_STEPS } from "./sample-data";
+import { ResearchReport, ResearchJob, ResearchDepth, ResearchScope } from "./types";
+import { SAMPLE_REPORTS, SAMPLE_SOURCES } from "./sample-data";
 
 interface ResearchContextType {
   reports: ResearchReport[];

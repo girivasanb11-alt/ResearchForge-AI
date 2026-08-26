@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import Link from "next/link";
 import {
   Bookmark,
@@ -10,12 +10,7 @@ import {
   MessageSquare,
   ShieldCheck,
   Clock,
-  Sparkles,
   ArrowLeft,
-  Check,
-  Copy,
-  Printer,
-  FileText,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";

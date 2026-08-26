@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { useResearch } from "@/lib/store";
 import { ReportHeader } from "@/components/report/ReportHeader";
 import { ReportOverviewMetrics } from "@/components/report/ReportOverviewMetrics";
@@ -11,14 +11,12 @@ import { ContradictionMatrix } from "@/components/report/ContradictionMatrix";
 import { ReportChatSidebar } from "@/components/report/ReportChatSidebar";
 import { AudioBriefingPlayer } from "@/components/report/AudioBriefingPlayer";
 import { ExportShareModal } from "@/components/report/ExportShareModal";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { BookOpen, Share2, GitCompare, FileText, ArrowLeft } from "lucide-react";
+import { Share2, GitCompare, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
 export default function ReportDetailPage() {
   const params = useParams();
-  const router = useRouter();
   const id = params?.id as string;
   const { getReportById } = useResearch();
 

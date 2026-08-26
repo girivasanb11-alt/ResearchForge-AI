@@ -7,9 +7,6 @@ import {
   Radio,
   Lock,
   ArrowUpRight,
-  Database,
-  Sparkles,
-  Zap,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 

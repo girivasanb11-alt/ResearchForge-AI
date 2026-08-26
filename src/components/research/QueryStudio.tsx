@@ -8,16 +8,13 @@ import {
   FileCode2,
   Building,
   Scale,
-  Sliders,
   Zap,
   Clock,
   Layers,
-  Search,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ResearchDepth, ResearchScope } from "@/lib/types";
-import { useResearch } from "@/lib/store";
 import { cn } from "@/lib/utils";
 
 interface QueryStudioProps {

@@ -2,18 +2,14 @@
 
 import React, { useState } from "react";
 import {
-  MessageSquare,
-  Sparkles,
   Send,
   X,
   Bot,
   User,
-  ExternalLink,
   BookOpen,
-  ArrowRight,
+  Sparkles,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { ChatMessage, ResearchReport } from "@/lib/types";
 
 interface ReportChatSidebarProps {

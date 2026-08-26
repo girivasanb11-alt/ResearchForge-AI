@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { BookOpen, Search, ArrowRight, ShieldCheck, Filter, Sparkles, Clock } from "lucide-react";
+import { Search, ArrowRight, ShieldCheck, Sparkles, Clock } from "lucide-react";
 import { useResearch } from "@/lib/store";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";

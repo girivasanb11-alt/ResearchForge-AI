@@ -1,7 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { Sparkles, Terminal, ShieldCheck, Cpu, Github, Twitter, ArrowUpRight } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
+import { Sparkles, Terminal, ShieldCheck, Cpu, ArrowUpRight } from "lucide-react";
 
 export function Footer() {
   return (

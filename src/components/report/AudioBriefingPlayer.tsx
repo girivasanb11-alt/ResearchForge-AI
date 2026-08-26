@@ -5,14 +5,11 @@ import {
   Play,
   Pause,
   RotateCcw,
-  Volume2,
   Headphones,
-  Sparkles,
   X,
   FastForward,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { ResearchReport } from "@/lib/types";
 import { formatDuration } from "@/lib/utils";
 

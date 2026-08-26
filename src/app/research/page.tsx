@@ -1,16 +1,11 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import Link from "next/link";
 import {
-  Sparkles,
   BookOpen,
-  Terminal,
-  Clock,
   ArrowRight,
   ShieldCheck,
-  Flame,
-  Layers,
 } from "lucide-react";
 import { QueryStudio } from "@/components/research/QueryStudio";
 import { AgentExecutionStream } from "@/components/research/AgentExecutionStream";

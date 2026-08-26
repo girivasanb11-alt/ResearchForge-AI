@@ -1,10 +1,9 @@
 "use client";
 
 import React from "react";
-import { CheckCircle2, XCircle, HelpCircle, Activity, Sparkles } from "lucide-react";
+import { CheckCircle2, XCircle, HelpCircle, Activity } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { cn } from "@/lib/utils";
 
 interface HypothesisBoardProps {
   hypotheses: {

@@ -1,4 +1,4 @@
-import { ResearchReport, CitationSource, ResearchJob } from "./types";
+import { ResearchReport, CitationSource } from "./types";
 
 export const SAMPLE_SOURCES: CitationSource[] = [
   {
@@ -444,77 +444,6 @@ The metabolic pharmaceutical landscape has advanced from mono-receptor GLP-1 ago
       { id: "gip", label: "GIP Agonism", type: "methodology", size: 20, connections: ["metabolic"] },
       { id: "gcgr", label: "Glucagon Agonism", type: "methodology", size: 20, connections: ["metabolic"] },
       { id: "oral", label: "Oral SNAC Delivery", type: "metric", size: 22, connections: ["metabolic"] },
-    ],
-  },
-];
-
-export const MOCK_EXECUTION_STEPS = [
-  {
-    id: "step-1",
-    agentName: "Query Decomposer & Protocol Planner",
-    title: "1. Query Decomposition & Hypothesis Formulation",
-    description: "Deconstructing core objective into sub-inquiries, academic search vectors, and target parameters.",
-    status: "completed" as const,
-    timestamp: "00:02",
-    progressPercent: 100,
-    findingsCount: 4,
-    sourcesDiscovered: 12,
-    logs: [
-      "[00:01] Objective parsed: Deep technical analysis of Solid-State Battery Commercialization.",
-      "[00:01] Identified key taxonomy nodes: Li6PS5Cl, LLZO, Dry Electrode Fibrillation, $82/kWh Parity.",
-      "[00:02] Generated 8 targeted academic search permutations across arXiv, Nature, PubMed, and USPTO.",
-      "[00:02] Established 4 verifiable research hypotheses.",
-    ],
-  },
-  {
-    id: "step-2",
-    agentName: "Autonomous Deep Web & ArXiv Crawler",
-    title: "2. Multi-Source Crawling & Citation Graph Traversal",
-    description: "Fetching high-authority academic PDFs, patent registries, and industry earnings transcripts.",
-    status: "completed" as const,
-    timestamp: "00:14",
-    progressPercent: 100,
-    findingsCount: 28,
-    sourcesDiscovered: 184,
-    logs: [
-      "[00:04] Querying CrossRef, Semantic Scholar, and Nature Materials API...",
-      "[00:06] Crawled 142 peer-reviewed full-text papers published between 2024–2026.",
-      "[00:09] Parsed 24 patent filings from USPTO and WIPO (QuantumScape, Toyota, CATL).",
-      "[00:12] Extracted 42 tabular performance datasets and electrochemistry Nyquist plots.",
-    ],
-  },
-  {
-    id: "step-3",
-    agentName: "Fact Verification & Contradiction Checker",
-    title: "3. Cross-Source Validation & Contradiction Engine",
-    description: "Triangulating claims across conflicting papers, detecting statistical anomalies, and assigning confidence scores.",
-    status: "completed" as const,
-    timestamp: "00:26",
-    progressPercent: 100,
-    findingsCount: 16,
-    sourcesDiscovered: 314,
-    logs: [
-      "[00:16] Cross-validating room temperature critical current density metrics across 18 laboratory tests.",
-      "[00:20] Identified consensus point: Halidosulfide Li6PS5Cl dendrite suppression at >12 mA/cm² (Confidence: 99%).",
-      "[00:22] Identified active contradiction: Cathode interface resistance degradation mechanism (Sulfide vs Oxide).",
-      "[00:25] Reconciled conflicting claims via multi-mechanism synthesis model.",
-    ],
-  },
-  {
-    id: "step-4",
-    agentName: "Executive Synthesis & Report Compiler",
-    title: "4. Knowledge Graph Construction & Dossier Synthesis",
-    description: "Assembling verified insights into interactive executive dossiers, charts, and downloadable artifacts.",
-    status: "completed" as const,
-    timestamp: "00:38",
-    progressPercent: 100,
-    findingsCount: 48,
-    sourcesDiscovered: 542,
-    logs: [
-      "[00:28] Synthesizing executive summary and comparative chemistry matrix.",
-      "[00:32] Generating knowledge graph ontology nodes and inter-citation edges.",
-      "[00:35] Formatting publication-ready charts (Cost parity curve, ionic conductivity radar).",
-      "[00:38] Report generation completed with 98.4% empirical confidence rating.",
     ],
   },
 ];

@@ -1,5 +1,5 @@
 import React from "react";
-import { Check, X, Sparkles, ShieldCheck, HelpCircle } from "lucide-react";
+import { Check, X, Sparkles } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 export function BenchmarkMatrix() {

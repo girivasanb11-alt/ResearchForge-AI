@@ -6,10 +6,7 @@ import {
   Database,
   GitCompare,
   Zap,
-  CheckCircle2,
   Sparkles,
-  ExternalLink,
-  BookOpen,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { ResearchReport } from "@/lib/types";
