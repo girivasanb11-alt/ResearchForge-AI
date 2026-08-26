@@ -2,11 +2,14 @@
 
 import React, { useState } from "react";
 import {
-  GitFork,
-  Search,
+  Globe,
+  Building2,
+  Users2,
+  TrendingUp,
+  Cpu,
+  Clock,
   Terminal,
-  ShieldAlert,
-  Share2,
+  CheckCircle2,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
@@ -16,68 +19,94 @@ export function PipelineVisualizer() {
 
   const steps = [
     {
-      id: "decompose",
+      id: "search_web",
       stepNum: "01",
-      name: "Decomposer & Planner",
-      role: "Recursive Task Breakdown",
-      icon: GitFork,
+      name: "Searching Web",
+      role: "Multi-Source Crawler",
+      icon: Globe,
       color: "from-indigo-500 to-blue-500",
       textColor: "text-indigo-400",
-      description: "Splits broad research queries into 8-16 targeted orthogonal sub-inquiries with boundary constraints.",
-      outputMetrics: "12 Sub-Queries Generated",
-      terminalSnippet: `[PLANNER] Received Query: "Solid-State Battery Degradation"
-[PLANNER] Extracting parameters: [Temperature: -20C to 60C, Stack Pressure: 1-5 MPa]
-[PLANNER] Sub-query 01: Li6PS5Cl vs LLZO room-temperature critical current density
-[PLANNER] Sub-query 02: Roll-to-roll dry electrode fibrillation yield bottlenecks
-[PLANNER] Delegating search parameters to 4 worker agents...`,
+      description: "Crawls academic preprints (Nature, arXiv, PubMed), USPTO patent claims, and SEC filings in parallel.",
+      outputMetrics: "542 Sources Ingested",
+      terminalSnippet: `[SEARCH_AGENT] Connecting to CrossRef, Semantic Scholar, and USPTO APIs...
+[SEARCH_AGENT] Ingested 142 Nature/Science peer-reviewed full-texts (2024–2026)
+[SEARCH_AGENT] Extracted 88 empirical data tables and Nyquist electrochem plots
+[SEARCH_AGENT] Vectorizing 1.4M tokens with domain embedding weights...`,
     },
     {
-      id: "crawl",
+      id: "company_agent",
       stepNum: "02",
-      name: "Deep Web & ArXiv Crawler",
-      role: "Multi-Source Ingestion",
-      icon: Search,
+      name: "Company Agent Running",
+      role: "Primary IP & Tech Extraction",
+      icon: Building2,
       color: "from-blue-500 to-cyan-500",
       textColor: "text-cyan-400",
-      description: "Traverses academic repositories (Nature, ScienceDirect, arXiv, PubMed), USPTO patents, and whitepapers in parallel.",
-      outputMetrics: "542 Primary Sources Ingested",
-      terminalSnippet: `[CRAWLER] Connected to CrossRef & Semantic Scholar API endpoints
-[CRAWLER] Ingested 142 Nature/Science peer-reviewed full-texts (2024–2026)
-[CRAWLER] Ingested 45 patent filings from QuantumScape, Toyota, CATL
-[CRAWLER] Extracted 88 empirical data tables and Nyquist electrochem plots
-[CRAWLER] Vectorizing 1.4M tokens with domain embedding weights...`,
+      description: "Extracts primary technical architectures, patent disclosures, pilot gigafactory yields, and commercial roadmaps.",
+      outputMetrics: "45 Patent Filings Parsed",
+      terminalSnippet: `[COMPANY_AGENT] Ingesting QuantumScape (Cobra separator) & Toyota-Idemitsu disclosures
+[COMPANY_AGENT] Mapping roll-to-roll solvent-free dry electrode production parameters
+[COMPANY_AGENT] Extracting continuous 100Ah pouch cell cycling data at 25°C
+[COMPANY_AGENT] Verifying 10-minute fast charging (10-80% SOC) retention curves...`,
     },
     {
-      id: "verify",
+      id: "competitor_agent",
       stepNum: "03",
-      name: "Contradiction Engine",
-      role: "Triangulation & Fact-Checking",
-      icon: ShieldAlert,
-      color: "from-amber-500 to-rose-500",
-      textColor: "text-amber-400",
-      description: "Compares divergent claims across independent laboratories. Isolates disputed metrics and calculates consensus ratios.",
-      outputMetrics: "6 Contradictions Reconciled",
-      terminalSnippet: `[VERIFIER] Triangulating critical current density metrics across 18 labs
-[VERIFIER] Conflict detected: Lab A claims dendrite short at 8mA/cm² vs Lab B at 14mA/cm²
-[VERIFIER] Anomaly isolated: Lab A operated under 0.5 MPa pressure; Lab B utilized 5 MPa
-[VERIFIER] Consensus established: High-rate cycling requires >= 3.5 MPa stack pressure
-[VERIFIER] Confidence score calibrated to 98.4%`,
+      name: "Competitor Agent Running",
+      role: "Adversarial Triangulation",
+      icon: Users2,
+      color: "from-cyan-500 to-teal-500",
+      textColor: "text-teal-400",
+      description: "Cross-checks competing chemical architectures (Sulfide vs Oxide vs Polymer) across 18 independent research labs.",
+      outputMetrics: "18 Labs Benchmarked",
+      terminalSnippet: `[COMPETITOR_AGENT] Triangulating critical current density metrics across 18 labs
+[COMPETITOR_AGENT] Conflict detected: Lab A claims dendrite short at 8mA/cm² vs Lab B at 14mA/cm²
+[COMPETITOR_AGENT] Anomaly isolated: Lab A operated under 0.5 MPa; Lab B utilized 5 MPa
+[COMPETITOR_AGENT] Reconciled consensus: High-rate cycling requires >= 3.5 MPa stack pressure`,
     },
     {
-      id: "synthesize",
+      id: "market_agent",
       stepNum: "04",
-      name: "Knowledge Graph Compiler",
-      role: "Multi-Modal Dossier Output",
-      icon: Share2,
+      name: "Market Agent Running",
+      role: "Macro TAM & Parity Modeling",
+      icon: TrendingUp,
+      color: "from-amber-500 to-orange-500",
+      textColor: "text-amber-400",
+      description: "Models cost per kWh trajectories, gigafactory capex reductions, and luxury EV commercial adoption timelines.",
+      outputMetrics: "$82/kWh by 2028",
+      terminalSnippet: `[MARKET_AGENT] Modeling dry electrode capex elimination (-40% gigafactory floor space)
+[MARKET_AGENT] Generating cost trajectory: $145/kWh (2026) -> $82/kWh (2028 cost parity)
+[MARKET_AGENT] Aggregating Tier-1 OEM commitment timelines (Toyota, BMW, Mercedes-Benz)
+[MARKET_AGENT] Projecting 120 GWh global SSB capacity operational by 2030...`,
+    },
+    {
+      id: "sandbox_analysis",
+      stepNum: "05",
+      name: "Sandbox Analysis",
+      role: "Numerical Code Execution",
+      icon: Cpu,
+      color: "from-purple-500 to-pink-500",
+      textColor: "text-purple-400",
+      description: "Runs Monte Carlo regressions, AST linters, and electrochemical simulation scripts in an isolated execution sandbox.",
+      outputMetrics: "6 Contradictions Resolved",
+      terminalSnippet: `[SANDBOX_AGENT] Spawning isolated Python 3.12 sandbox environment
+[SANDBOX_AGENT] Executing Monte Carlo regression over 48 cited dataset tables
+[SANDBOX_AGENT] Validating ionic conductivity temperature dependence curves
+[SANDBOX_AGENT] Calibrating empirical confidence score to 98.4% (Zero Hallucination)`,
+    },
+    {
+      id: "waiting_approval",
+      stepNum: "06",
+      name: "Waiting Approval",
+      role: "Human-in-the-Loop Signoff",
+      icon: Clock,
       color: "from-emerald-500 to-teal-500",
       textColor: "text-emerald-400",
-      description: "Generates structured executive briefing, comparative matrices, interactive citation graphs, and audio briefings.",
-      outputMetrics: "100% Ground-Truthed Report",
-      terminalSnippet: `[COMPILER] Assembling Executive Briefing & Key Comparative Matrix
-[COMPILER] Constructing interactive 3D Knowledge Graph (9 core ontology nodes)
-[COMPILER] Generating Recharts comparative cost & conductivity curves
-[COMPILER] Compiling BibTeX citations & audio briefing podcast script
-[COMPILER] Deep Research Dossier completed in 38.4s.`,
+      description: "Assembles interactive knowledge graph, executive audio podcast, and waits for user verification sign-off.",
+      outputMetrics: "Dossier Ready for Signoff",
+      terminalSnippet: `[SUPERVISOR] Assembling 9-node interactive Knowledge Graph
+[SUPERVISOR] Compiling BibTeX citation dataset and dual-voice podcast briefing
+[SUPERVISOR] Generating PDF and LaTeX printable formats
+[SUPERVISOR] Swarm execution complete. Awaiting user signoff to publish dossier.`,
     },
   ];
 
@@ -86,19 +115,19 @@ export function PipelineVisualizer() {
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 space-y-12">
         {/* Section Header */}
         <div className="text-center space-y-3 max-w-2xl mx-auto">
-          <Badge variant="default" className="font-mono text-xs">
-            Autonomous Architecture
+          <Badge variant="cyan" className="font-mono text-xs">
+            Agent Activity & Orchestration
           </Badge>
           <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-foreground">
-            The Multi-Agent Consensus Pipeline
+            TrueForge Multi-Agent Pipeline
           </h2>
           <p className="text-sm sm:text-base text-muted-foreground">
-            Unlike generic single-turn LLMs, ResearchForge AI deploys specialized autonomous agents in an adversarial verification loop.
+            Watch autonomous agents execute in parallel, cross-verifying facts across web, company specs, competitors, and sandbox simulations.
           </p>
         </div>
 
-        {/* 4 Interactive Pipeline Steps */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+        {/* 6 Interactive Pipeline Steps */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
           {steps.map((step, idx) => {
             const Icon = step.icon;
             const isSelected = activeStep === idx;
@@ -107,37 +136,37 @@ export function PipelineVisualizer() {
                 key={step.id}
                 onClick={() => setActiveStep(idx)}
                 className={cn(
-                  "flex flex-col text-left p-5 rounded-2xl border transition-all duration-200 relative overflow-hidden group",
+                  "flex flex-col text-left p-4 rounded-2xl border transition-all duration-200 relative overflow-hidden group",
                   isSelected
                     ? "bg-card border-indigo-500/80 shadow-lg shadow-indigo-500/10 ring-1 ring-indigo-500/30"
                     : "bg-card/40 border-border/70 hover:bg-secondary/40 hover:border-border"
                 )}
               >
-                {/* Step number badge */}
-                <div className="flex items-center justify-between w-full mb-3">
+                {/* Step number and check */}
+                <div className="flex items-center justify-between w-full mb-2.5">
                   <div
                     className={cn(
-                      "flex h-9 w-9 items-center justify-center rounded-xl bg-secondary border border-border/80 transition-colors",
+                      "flex h-8 w-8 items-center justify-center rounded-xl bg-secondary border border-border/80 transition-colors",
                       isSelected ? "text-indigo-400 border-indigo-500/40 bg-indigo-500/10" : "text-muted-foreground"
                     )}
                   >
                     <Icon className="h-4 w-4" />
                   </div>
-                  <span className="text-xs font-mono font-bold text-muted-foreground">STEP {step.stepNum}</span>
+                  <div className="flex items-center gap-1 text-emerald-400 font-mono text-[11px] font-bold">
+                    <CheckCircle2 className="h-3 w-3" />
+                    <span>✓</span>
+                  </div>
                 </div>
 
-                <h3 className="text-sm font-bold text-foreground mb-1 group-hover:text-indigo-300 transition-colors">
+                <h3 className="text-xs font-bold text-foreground mb-1 group-hover:text-indigo-300 transition-colors line-clamp-1">
                   {step.name}
                 </h3>
-                <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed mb-3">
+                <p className="text-[11px] text-muted-foreground line-clamp-2 leading-tight mb-2">
                   {step.description}
                 </p>
 
-                <div className="mt-auto pt-2 border-t border-border/50 flex items-center justify-between text-[11px] font-mono">
-                  <span className={cn("font-medium", step.textColor)}>{step.outputMetrics}</span>
-                  <span className={cn("text-xs transition-transform", isSelected ? "text-indigo-400 translate-x-0.5" : "text-muted-foreground")}>
-                    →
-                  </span>
+                <div className="mt-auto pt-1.5 border-t border-border/50 flex items-center justify-between text-[10px] font-mono">
+                  <span className={cn("font-medium truncate", step.textColor)}>{step.outputMetrics}</span>
                 </div>
               </button>
             );
@@ -156,7 +185,7 @@ export function PipelineVisualizer() {
               </div>
               <span className="text-xs font-mono text-muted-foreground ml-2 flex items-center gap-1.5">
                 <Terminal className="h-3.5 w-3.5 text-indigo-400" />
-                <span>agent://orchestrator/pipeline/{steps[activeStep].id}.log</span>
+                <span>agent://swarm/activity/{steps[activeStep].id}.log</span>
               </span>
             </div>
             <div className="flex items-center gap-2">
@@ -169,8 +198,11 @@ export function PipelineVisualizer() {
           {/* Terminal Body */}
           <div className="p-6 font-mono text-xs text-zinc-300 bg-zinc-950/60 leading-relaxed overflow-x-auto space-y-2">
             <div className="text-muted-foreground pb-2 border-b border-zinc-800 flex items-center justify-between text-[11px]">
-              <span>[STATE: ACTIVE_INSPECTION]</span>
-              <span className="text-emerald-400">● 100% Deterministic Grounding</span>
+              <span>[STAGE: {steps[activeStep].stepNum} OF 06]</span>
+              <span className="text-emerald-400 flex items-center gap-1">
+                <CheckCircle2 className="h-3 w-3" />
+                <span>Verified Cross-Validation Active</span>
+              </span>
             </div>
             <pre className="text-indigo-300 font-sans text-xs sm:text-sm font-mono whitespace-pre-wrap">
               {steps[activeStep].terminalSnippet}
