@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import {
   Globe,
@@ -38,16 +38,13 @@ interface AgentActivityCardProps {
   query?: string;
   reportId?: string;
   onApprove?: () => void;
-  onReset?: () => void;
 }
 
 export function AgentActivityCard({
   query = "Solid-State Battery Commercialization: Electrolyte Architectures and Market Deployment",
   reportId = "solid-state-batteries-2026",
   onApprove,
-  onReset,
 }: AgentActivityCardProps) {
-  const [currentStepIndex, setCurrentStepIndex] = useState(4); // Default to Sandbox Analysis / Waiting Approval
   const [isApproved, setIsApproved] = useState(false);
   const [isSimulating, setIsSimulating] = useState(false);
   const [activeTab, setActiveTab] = useState<"activity" | "logs">("activity");
@@ -151,7 +148,6 @@ export function AgentActivityCard({
   const handleRerun = () => {
     setIsApproved(false);
     setIsSimulating(true);
-    setCurrentStepIndex(0);
     setSteps((prev) =>
       prev.map((s, idx) => ({
         ...s,
@@ -161,61 +157,56 @@ export function AgentActivityCard({
     );
 
     // Simulate multi-step progression
-    const timers = [
-      setTimeout(() => {
-        setSteps((prev) =>
-          prev.map((s, idx) => ({
-            ...s,
-            status: idx < 1 ? "completed" : idx === 1 ? "running" : "pending",
-            progress: idx < 1 ? 100 : idx === 1 ? 40 : 0,
-          }))
-        );
-        setCurrentStepIndex(1);
-      }, 1200),
-      setTimeout(() => {
-        setSteps((prev) =>
-          prev.map((s, idx) => ({
-            ...s,
-            status: idx < 2 ? "completed" : idx === 2 ? "running" : "pending",
-            progress: idx < 2 ? 100 : idx === 2 ? 60 : 0,
-          }))
-        );
-        setCurrentStepIndex(2);
-      }, 2400),
-      setTimeout(() => {
-        setSteps((prev) =>
-          prev.map((s, idx) => ({
-            ...s,
-            status: idx < 3 ? "completed" : idx === 3 ? "running" : "pending",
-            progress: idx < 3 ? 100 : idx === 3 ? 80 : 0,
-          }))
-        );
-        setCurrentStepIndex(3);
-      }, 3600),
-      setTimeout(() => {
-        setSteps((prev) =>
-          prev.map((s, idx) => ({
-            ...s,
-            status: idx < 4 ? "completed" : idx === 4 ? "running" : "pending",
-            progress: idx < 4 ? 100 : idx === 4 ? 90 : 0,
-          }))
-        );
-        setCurrentStepIndex(4);
-      }, 4800),
-      setTimeout(() => {
-        setSteps((prev) =>
-          prev.map((s, idx) => ({
-            ...s,
-            status: idx < 5 ? "completed" : "running",
-            progress: idx < 5 ? 100 : 85,
-          }))
-        );
-        setCurrentStepIndex(5);
-        setIsSimulating(false);
-      }, 6000),
-    ];
+    setTimeout(() => {
+      setSteps((prev) =>
+        prev.map((s, idx) => ({
+          ...s,
+          status: idx < 1 ? "completed" : idx === 1 ? "running" : "pending",
+          progress: idx < 1 ? 100 : idx === 1 ? 40 : 0,
+        }))
+      );
+    }, 1200);
 
-    return () => timers.forEach(clearTimeout);
+    setTimeout(() => {
+      setSteps((prev) =>
+        prev.map((s, idx) => ({
+          ...s,
+          status: idx < 2 ? "completed" : idx === 2 ? "running" : "pending",
+          progress: idx < 2 ? 100 : idx === 2 ? 60 : 0,
+        }))
+      );
+    }, 2400);
+
+    setTimeout(() => {
+      setSteps((prev) =>
+        prev.map((s, idx) => ({
+          ...s,
+          status: idx < 3 ? "completed" : idx === 3 ? "running" : "pending",
+          progress: idx < 3 ? 100 : idx === 3 ? 80 : 0,
+        }))
+      );
+    }, 3600);
+
+    setTimeout(() => {
+      setSteps((prev) =>
+        prev.map((s, idx) => ({
+          ...s,
+          status: idx < 4 ? "completed" : idx === 4 ? "running" : "pending",
+          progress: idx < 4 ? 100 : idx === 4 ? 90 : 0,
+        }))
+      );
+    }, 4800);
+
+    setTimeout(() => {
+      setSteps((prev) =>
+        prev.map((s, idx) => ({
+          ...s,
+          status: idx < 5 ? "completed" : "running",
+          progress: idx < 5 ? 100 : 85,
+        }))
+      );
+      setIsSimulating(false);
+    }, 6000);
   };
 
   const completedCount = steps.filter((s) => s.status === "completed").length;
@@ -292,7 +283,7 @@ export function AgentActivityCard({
       {activeTab === "activity" ? (
         /* 6-Stage Agent Activity List */
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5 pt-2">
-          {steps.map((step, idx) => {
+          {steps.map((step) => {
             const Icon = step.icon;
             const isDone = step.status === "completed";
             const isRunning = step.status === "running";
