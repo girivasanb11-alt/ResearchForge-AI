@@ -8,10 +8,12 @@ import {
   ShieldCheck,
   Activity,
   Cpu,
+  Network,
 } from "lucide-react";
 import { QueryStudio } from "@/components/research/QueryStudio";
 import { AgentExecutionStream } from "@/components/research/AgentExecutionStream";
 import { AgentActivityCard } from "@/components/research/AgentActivityCard";
+import { McpOrchestratorPipeline } from "@/components/research/McpOrchestratorPipeline";
 import { SourceInspector } from "@/components/research/SourceInspector";
 import { HypothesisBoard } from "@/components/research/HypothesisBoard";
 import { useResearch } from "@/lib/store";
@@ -22,7 +24,7 @@ import { formatDate } from "@/lib/utils";
 
 export default function ResearchPage() {
   const { currentJob, startNewResearch, cancelResearch, reports } = useResearch();
-  const [viewMode, setViewMode] = useState<"standard" | "agent_activity">("standard");
+  const [viewMode, setViewMode] = useState<"standard" | "mcp_pipeline" | "agent_activity">("mcp_pipeline");
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-10">
@@ -35,16 +37,38 @@ export default function ResearchPage() {
             <span className="text-foreground font-semibold">Research Studio</span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground">
-            Autonomous Deep Research Studio
+            TrueForge Autonomous Deep Research Studio
           </h1>
           <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">
-            Configure multi-agent parameters, crawl academic indices, and synthesize publication-grade dossiers.
+            MCP Tool Calling → Multi-Agent Swarm → Python Sandbox Execution → Publication Dossier.
           </p>
         </div>
 
         {/* View Mode Toggle & Sample Navigator */}
         <div className="flex flex-wrap items-center gap-2">
           <div className="flex items-center gap-1 bg-secondary/50 p-1 rounded-xl border border-border/60">
+            <button
+              onClick={() => setViewMode("mcp_pipeline")}
+              className={`px-3 py-1 rounded-lg text-xs font-mono flex items-center gap-1.5 transition-all ${
+                viewMode === "mcp_pipeline"
+                  ? "bg-card text-indigo-400 font-bold shadow-xs border border-border/80"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              <Network className="h-3.5 w-3.5" />
+              <span>MCP Pipeline</span>
+            </button>
+            <button
+              onClick={() => setViewMode("agent_activity")}
+              className={`px-3 py-1 rounded-lg text-xs font-mono flex items-center gap-1.5 transition-all ${
+                viewMode === "agent_activity"
+                  ? "bg-card text-cyan-400 font-bold shadow-xs border border-border/80"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              <Activity className="h-3.5 w-3.5" />
+              <span>Agent Swarm</span>
+            </button>
             <button
               onClick={() => setViewMode("standard")}
               className={`px-3 py-1 rounded-lg text-xs font-mono transition-all ${
@@ -54,17 +78,6 @@ export default function ResearchPage() {
               }`}
             >
               Configurator
-            </button>
-            <button
-              onClick={() => setViewMode("agent_activity")}
-              className={`px-3 py-1 rounded-lg text-xs font-mono flex items-center gap-1.5 transition-all ${
-                viewMode === "agent_activity"
-                  ? "bg-card text-indigo-400 font-bold shadow-xs border border-border/80"
-                  : "text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              <Activity className="h-3.5 w-3.5" />
-              <span>Live Agent Activity</span>
             </button>
           </div>
 
@@ -79,9 +92,14 @@ export default function ResearchPage() {
 
       {/* Main Studio Area */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        {/* Left Column: Query Studio or Active Execution Stream or Agent Activity Card */}
+        {/* Left Column: Mcp Pipeline / Agent Activity / Query Studio */}
         <div className="lg:col-span-8 space-y-8">
-          {viewMode === "agent_activity" ? (
+          {viewMode === "mcp_pipeline" ? (
+            <McpOrchestratorPipeline
+              query={currentJob?.query || "Solid-State Battery Commercialization: Electrolyte Architectures and Market Deployment"}
+              reportId={currentJob?.reportId || "solid-state-batteries-2026"}
+            />
+          ) : viewMode === "agent_activity" ? (
             <AgentActivityCard
               query={currentJob?.query || "Solid-State Battery Commercialization: Electrolyte Architectures and Market Deployment"}
               reportId={currentJob?.reportId || "solid-state-batteries-2026"}
@@ -130,66 +148,59 @@ export default function ResearchPage() {
           </div>
         </div>
 
-        {/* Right Column: Pre-Compiled Dossiers & History Sidebar */}
+        {/* Right Column: TrueForge Pipeline Summary & Published Dossiers */}
         <div className="lg:col-span-4 space-y-6">
-          {/* TrueForge Agent Activity Quick Monitor */}
+          {/* TrueForge Execution Architecture Panel */}
           <div className="rounded-3xl border border-indigo-500/30 bg-card/90 shadow-xl p-6 backdrop-blur-xl space-y-4">
             <div className="flex items-center justify-between pb-3 border-b border-border/70">
               <h3 className="text-xs font-bold text-foreground flex items-center gap-2 font-mono uppercase tracking-wider">
                 <Cpu className="h-4 w-4 text-indigo-400" />
-                <span>Agent Activity Status</span>
+                <span>Evaluation Pipeline</span>
               </h3>
               <Badge variant="cyan" className="text-[10px] font-mono">
-                Live
+                TrueForge Core
               </Badge>
             </div>
 
-            <div className="space-y-2 text-xs font-mono">
+            {/* Architecture Steps Sequence */}
+            <div className="space-y-1.5 text-xs font-mono">
               <div className="flex items-center justify-between p-2 rounded-lg bg-secondary/40 border border-border/50">
-                <span className="text-emerald-400 font-semibold flex items-center gap-1.5">
-                  <span>✓</span> Searching Web
-                </span>
-                <span className="text-muted-foreground text-[10px]">542 Sources</span>
+                <span className="text-muted-foreground">01. User Input</span>
+                <span className="text-emerald-400 font-bold">✓ Formulated</span>
               </div>
               <div className="flex items-center justify-between p-2 rounded-lg bg-secondary/40 border border-border/50">
-                <span className="text-emerald-400 font-semibold flex items-center gap-1.5">
-                  <span>✓</span> Company Agent Running
-                </span>
-                <span className="text-muted-foreground text-[10px]">Specs Ingested</span>
+                <span className="text-muted-foreground">02. Research Request</span>
+                <span className="text-emerald-400 font-bold">✓ Decomposed</span>
+              </div>
+              <div className="flex items-center justify-between p-2 rounded-lg bg-purple-500/10 border border-purple-500/30">
+                <span className="text-purple-300 font-bold">03. MCP Tool Dispatch</span>
+                <span className="text-purple-400 font-bold">4 Tools</span>
               </div>
               <div className="flex items-center justify-between p-2 rounded-lg bg-secondary/40 border border-border/50">
-                <span className="text-emerald-400 font-semibold flex items-center gap-1.5">
-                  <span>✓</span> Competitor Agent Running
-                </span>
-                <span className="text-muted-foreground text-[10px]">18 Labs</span>
+                <span className="text-muted-foreground">04. Subagent Swarm</span>
+                <span className="text-emerald-400 font-bold">✓ 4 Agents</span>
               </div>
               <div className="flex items-center justify-between p-2 rounded-lg bg-secondary/40 border border-border/50">
-                <span className="text-emerald-400 font-semibold flex items-center gap-1.5">
-                  <span>✓</span> Market Agent Running
-                </span>
-                <span className="text-muted-foreground text-[10px]">$82/kWh TAM</span>
-              </div>
-              <div className="flex items-center justify-between p-2 rounded-lg bg-secondary/40 border border-border/50">
-                <span className="text-emerald-400 font-semibold flex items-center gap-1.5">
-                  <span>✓</span> Sandbox Analysis
-                </span>
-                <span className="text-muted-foreground text-[10px]">Python Sim</span>
+                <span className="text-muted-foreground">05. Python Sandbox</span>
+                <span className="text-emerald-400 font-bold">✓ Executed</span>
               </div>
               <div className="flex items-center justify-between p-2 rounded-lg bg-indigo-500/10 border border-indigo-500/30">
-                <span className="text-indigo-300 font-semibold flex items-center gap-1.5">
-                  <span>✓</span> Waiting Approval
-                </span>
-                <span className="text-indigo-400 text-[10px] font-bold">Ready</span>
+                <span className="text-indigo-300 font-bold">06. Human Approval</span>
+                <span className="text-indigo-400 font-bold">Gate Ready</span>
+              </div>
+              <div className="flex items-center justify-between p-2 rounded-lg bg-emerald-500/10 border border-emerald-500/30">
+                <span className="text-emerald-300 font-bold">07. Research Dossier</span>
+                <span className="text-emerald-400 font-bold">Published</span>
               </div>
             </div>
 
             <Button
               variant="outline"
               size="sm"
-              onClick={() => setViewMode("agent_activity")}
+              onClick={() => setViewMode("mcp_pipeline")}
               className="w-full text-xs font-mono justify-center"
             >
-              Inspect Swarm Details →
+              Inspect MCP Pipeline →
             </Button>
           </div>
 
