@@ -29,14 +29,14 @@ export function CommandMenu() {
   const handleSelectReport = (id: string) => {
     setIsCommandMenuOpen(false);
     setSearch("");
-    router.push(`/report/${id}`);
+    router.push(`/dashboard/reports/${id}`);
   };
 
   const handleStartQuickSearch = (query: string) => {
     setIsCommandMenuOpen(false);
     setSearch("");
     startResearch(query);
-    router.push("/research");
+    router.push("/dashboard/research");
   };
 
   if (!isCommandMenuOpen) return null;
@@ -120,7 +120,7 @@ export function CommandMenu() {
               <button
                 onClick={() => {
                   setIsCommandMenuOpen(false);
-                  router.push("/research");
+                  router.push("/dashboard/research");
                 }}
                 className="flex items-center gap-2 px-3 py-2 text-xs rounded-lg hover:bg-secondary text-left transition-colors"
               >
@@ -131,7 +131,7 @@ export function CommandMenu() {
               <button
                 onClick={() => {
                   setIsCommandMenuOpen(false);
-                  router.push("/sessions");
+                  router.push("/dashboard/sessions");
                 }}
                 className="flex items-center gap-2 px-3 py-2 text-xs rounded-lg hover:bg-secondary text-left transition-colors"
               >
@@ -142,7 +142,7 @@ export function CommandMenu() {
               <button
                 onClick={() => {
                   setIsCommandMenuOpen(false);
-                  router.push("/agents");
+                  router.push("/dashboard/agents");
                 }}
                 className="flex items-center gap-2 px-3 py-2 text-xs rounded-lg hover:bg-secondary text-left transition-colors"
               >
@@ -153,7 +153,7 @@ export function CommandMenu() {
               <button
                 onClick={() => {
                   setIsCommandMenuOpen(false);
-                  router.push("/reports");
+                  router.push("/dashboard/reports");
                 }}
                 className="flex items-center gap-2 px-3 py-2 text-xs rounded-lg hover:bg-secondary text-left transition-colors"
               >
@@ -164,7 +164,7 @@ export function CommandMenu() {
               <button
                 onClick={() => {
                   setIsCommandMenuOpen(false);
-                  router.push("/settings");
+                  router.push("/dashboard/settings");
                 }}
                 className="flex items-center gap-2 px-3 py-2 text-xs rounded-lg hover:bg-secondary text-left transition-colors"
               >

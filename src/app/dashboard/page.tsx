@@ -21,7 +21,7 @@ export default function DashboardPage() {
 
   return (
     <DashboardLayout>
-      <div className="space-y-8">
+      <div className="space-y-8 max-w-6xl mx-auto">
         {/* Welcome Banner */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-border/70">
           <div className="space-y-1">
@@ -37,7 +37,7 @@ export default function DashboardPage() {
             </p>
           </div>
 
-          <Link href="/research">
+          <Link href="/dashboard/research">
             <Button variant="glow" size="sm" className="h-10 px-5 rounded-xl font-bold font-mono text-xs flex items-center gap-2">
               <PlusCircle className="h-4 w-4" />
               <span>New Research</span>
@@ -89,7 +89,7 @@ export default function DashboardPage() {
                 <span className="h-2 w-2 rounded-full bg-purple-400 animate-ping" />
                 <span className="text-xs font-mono text-purple-300 font-bold uppercase">Active Investigation</span>
               </div>
-              <Link href="/research">
+              <Link href="/dashboard/research">
                 <Button size="sm" variant="glow" className="text-xs font-mono">
                   View Real-Time Swarm
                 </Button>
@@ -108,7 +108,7 @@ export default function DashboardPage() {
                 Enter your research topic to trigger the 7-stage TrueForge autonomous swarm.
               </p>
             </div>
-            <Link href="/research">
+            <Link href="/dashboard/research">
               <Button variant="glow" size="sm" className="text-xs font-mono font-bold">
                 Deploy Agent Swarm
               </Button>
@@ -118,7 +118,7 @@ export default function DashboardPage() {
           <div className="space-y-4">
             <div className="flex items-center justify-between border-b border-border/60 pb-2">
               <h3 className="text-sm font-bold text-foreground font-sans">Recent Research Investigations</h3>
-              <Link href="/sessions" className="text-xs font-mono text-purple-400 hover:underline">
+              <Link href="/dashboard/sessions" className="text-xs font-mono text-purple-400 hover:underline">
                 View All ({sessions.length})
               </Link>
             </div>
@@ -135,7 +135,7 @@ export default function DashboardPage() {
                   </div>
                   {s.reportId && (
                     <Link
-                      href={`/report/${s.reportId}`}
+                      href={`/dashboard/reports/${s.reportId}`}
                       className="text-xs font-mono text-purple-400 font-semibold flex items-center gap-1 hover:underline"
                     >
                       <span>Read Dossier</span>

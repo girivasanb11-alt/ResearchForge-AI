@@ -35,37 +35,37 @@ export function Sidebar({ onOpenConnectRepo }: SidebarProps) {
     },
     {
       label: "New Research",
-      href: "/research",
+      href: "/dashboard/research",
       icon: PlusCircle,
       highlight: true,
     },
     {
       label: "Research Sessions",
-      href: "/sessions",
+      href: "/dashboard/sessions",
       icon: Clock,
       badge: sessions.length > 0 ? sessions.length.toString() : undefined,
     },
     {
       label: "Agents",
-      href: "/agents",
+      href: "/dashboard/agents",
       icon: Bot,
       statusPulse: activeAgentStatus !== "idle",
     },
     {
       label: "Reports",
-      href: "/reports",
+      href: "/dashboard/reports",
       icon: FileText,
       badge: reports.length > 0 ? reports.length.toString() : undefined,
     },
     {
       label: "Sandbox",
-      href: "/sandbox",
+      href: "/dashboard/sandbox",
       icon: Terminal,
       tag: "Python 3.12",
     },
     {
       label: "Settings",
-      href: "/settings",
+      href: "/dashboard/settings",
       icon: Settings,
     },
   ];
@@ -97,7 +97,15 @@ export function Sidebar({ onOpenConnectRepo }: SidebarProps) {
 
         {navItems.map((item) => {
           const Icon = item.icon;
-          const isActive = pathname === item.href || (item.href === "/reports" && pathname.startsWith("/report"));
+          const isActive =
+            pathname === item.href ||
+            (item.href === "/dashboard/reports" && pathname.startsWith("/dashboard/reports")) ||
+            (item.href === "/dashboard/research" && pathname === "/research") ||
+            (item.href === "/dashboard/sessions" && pathname === "/sessions") ||
+            (item.href === "/dashboard/agents" && pathname === "/agents") ||
+            (item.href === "/dashboard/reports" && pathname === "/reports") ||
+            (item.href === "/dashboard/sandbox" && pathname === "/sandbox") ||
+            (item.href === "/dashboard/settings" && pathname === "/settings");
 
           return (
             <Link
