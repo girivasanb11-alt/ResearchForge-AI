@@ -2,84 +2,89 @@
 
 import React from "react";
 import Link from "next/link";
-import { Terminal, Database, ShieldCheck, FolderGit2 } from "lucide-react";
+import { DashboardLayout } from "@/components/layout/DashboardLayout";
+import { NewResearchInput } from "@/features/research/NewResearchInput";
+import { AgentTimeline } from "@/features/research/AgentTimeline";
+import { ActiveAgentsPanel } from "@/features/research/ActiveAgentsPanel";
+import { HumanApprovalModal } from "@/features/research/HumanApprovalModal";
 import { useResearch } from "@/lib/store";
+import { Button } from "@/components/ui/button";
+import { ArrowRight, CheckCircle2, RotateCcw } from "lucide-react";
 
-export default function ResearchPage() {
-  const { currentJob } = useResearch();
+export default function ResearchStudioPage() {
+  const {
+    currentSession,
+    activeStages,
+    activeAgentStatus,
+    startResearch,
+    cancelResearch,
+    setIsApprovalModalOpen,
+  } = useResearch();
+
+  const isExecuting =
+    activeAgentStatus === "searching" ||
+    activeAgentStatus === "analyzing" ||
+    activeAgentStatus === "waiting_approval" ||
+    activeAgentStatus === "generating_report";
 
   return (
-    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 space-y-8">
-      {/* Top Navigation / Breadcrumb */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-border/80">
-        <div>
-          <div className="flex items-center gap-2 text-xs font-mono text-muted-foreground mb-1">
-            <Link href="/" className="hover:text-foreground transition-colors">Home</Link>
-            <span>/</span>
-            <span className="text-foreground font-semibold">Dashboard</span>
-          </div>
-          <h1 className="text-2xl font-bold tracking-tight text-foreground font-sans">
-            Research Studio
-          </h1>
-        </div>
+    <DashboardLayout>
+      <div className="space-y-8">
+        {/* If no active run or completed, show the New Research Input Launcher */}
+        {!isExecuting && !currentSession?.reportId && (
+          <NewResearchInput
+            onStart={(topic, depth, scope) => startResearch(topic, depth, scope)}
+            isLoading={isExecuting}
+          />
+        )}
 
-        <div className="flex items-center gap-2 text-xs font-mono text-muted-foreground">
-          <span className="h-2 w-2 rounded-full bg-emerald-400 inline-block" />
-          <span>System Idle</span>
-        </div>
+        {/* If completed, show success card */}
+        {currentSession && currentSession.status === "completed" && currentSession.reportId && (
+          <div className="p-6 sm:p-8 rounded-3xl border border-emerald-500/40 bg-emerald-500/10 backdrop-blur-xl space-y-4 shadow-xl">
+            <div className="flex items-center gap-2 text-xs font-mono text-emerald-400 font-bold uppercase">
+              <CheckCircle2 className="h-4 w-4" />
+              <span>Investigation Completed & Verified</span>
+            </div>
+            <h2 className="text-2xl font-bold text-foreground font-sans">
+              {currentSession.topic}
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-300 font-sans">
+              All 7 agent stages passed empirical validation, sandbox execution, and researcher sign-off.
+            </p>
+            <div className="flex flex-wrap items-center gap-3 pt-2">
+              <Link href={`/report/${currentSession.reportId}`}>
+                <Button variant="glow" size="sm" className="font-mono text-xs font-bold flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white">
+                  <span>Open Full Research Dossier</span>
+                  <ArrowRight className="h-4 w-4" />
+                </Button>
+              </Link>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={cancelResearch}
+                className="text-xs font-mono"
+              >
+                <RotateCcw className="h-3.5 w-3.5 mr-1.5" />
+                <span>Start Another Investigation</span>
+              </Button>
+            </div>
+          </div>
+        )}
+
+        {/* Active Agents Panel */}
+        <ActiveAgentsPanel />
+
+        {/* 7-Stage Agent Orchestration Timeline */}
+        {currentSession && (
+          <AgentTimeline
+            stages={activeStages}
+            onOpenApproval={() => setIsApprovalModalOpen(true)}
+          />
+        )}
+
+        {/* Human Approval Gate Modal */}
+        <HumanApprovalModal />
       </div>
-
-      {/* Main Layout: Sidebar & Content Area */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        {/* Sidebar */}
-        <aside className="lg:col-span-3 space-y-4">
-          <div className="rounded-2xl border border-border bg-card/60 p-4 space-y-3">
-            <div className="text-xs font-mono font-bold text-muted-foreground uppercase tracking-wider">
-              Navigation
-            </div>
-            <nav className="space-y-1 text-xs font-mono">
-              <div className="p-2 rounded-lg bg-secondary text-foreground font-semibold flex items-center gap-2">
-                <Terminal className="h-3.5 w-3.5 text-indigo-400" />
-                <span>Active Workspace</span>
-              </div>
-              <div className="p-2 rounded-lg text-muted-foreground flex items-center gap-2">
-                <Database className="h-3.5 w-3.5" />
-                <span>Datasets</span>
-              </div>
-              <div className="p-2 rounded-lg text-muted-foreground flex items-center gap-2">
-                <FolderGit2 className="h-3.5 w-3.5" />
-                <span>Repositories</span>
-              </div>
-            </nav>
-          </div>
-        </aside>
-
-        {/* Empty Content Area */}
-        <main className="lg:col-span-9 space-y-6">
-          <div className="rounded-3xl border border-dashed border-border bg-card/40 p-16 text-center space-y-4">
-            <div className="mx-auto h-12 w-12 rounded-2xl bg-secondary/60 flex items-center justify-center text-muted-foreground">
-              <Terminal className="h-6 w-6 text-muted-foreground/60" />
-            </div>
-
-            <div className="space-y-1">
-              <h2 className="text-base font-bold text-foreground">
-                Dashboard under construction
-              </h2>
-              <p className="text-xs font-mono text-muted-foreground">
-                {currentJob ? "Processing research inquiry..." : "No research sessions available. Waiting for real data."}
-              </p>
-            </div>
-          </div>
-
-          <div className="p-4 rounded-2xl border border-border/60 bg-card/20 flex items-center justify-between text-xs font-mono text-muted-foreground">
-            <span className="flex items-center gap-1.5">
-              <ShieldCheck className="h-3.5 w-3.5 text-emerald-400" />
-              <span>Authentication & Engine Active</span>
-            </span>
-            <span>Empty state ready for redesign</span>
-          </div>
-        </main>
-      </div>
-    </div>
+    </DashboardLayout>
   );
 }
