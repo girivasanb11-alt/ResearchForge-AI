@@ -81,7 +81,7 @@ export default function DashboardResearchPage() {
 
               {/* Active Swarm Status Indicators */}
               <div className="lg:col-span-4 space-y-4">
-                <ActiveAgentsPanel activeStatus={activeAgentStatus} />
+                <ActiveAgentsPanel />
               </div>
             </div>
 
