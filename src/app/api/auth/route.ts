@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { email, password, action, firstName, lastName, provider } = body;
+    const { email, action, firstName, lastName, provider } = body;
 
     // OAuth Simulation Handler
     if (provider) {
@@ -42,7 +42,7 @@ export async function POST(request: Request) {
       },
       token: `jwt_session_${Date.now()}`,
     });
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       { success: false, error: "Invalid authentication request payload" },
       { status: 400 }

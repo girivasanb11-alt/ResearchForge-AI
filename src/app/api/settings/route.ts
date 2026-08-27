@@ -21,7 +21,7 @@ export async function POST(request: Request) {
       message: "Workspace and MCP tool settings updated.",
       data: body,
     });
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       { success: false, error: "Failed to update settings" },
       { status: 400 }

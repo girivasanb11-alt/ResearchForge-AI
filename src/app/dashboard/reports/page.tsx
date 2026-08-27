@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { PlusCircle, FileText, ArrowRight, ShieldCheck, Clock } from "lucide-react";
+import { PlusCircle, FileText, ArrowRight, ShieldCheck } from "lucide-react";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { ReportEmptyState } from "@/features/reports/ReportEmptyState";
 import { useResearch } from "@/lib/store";

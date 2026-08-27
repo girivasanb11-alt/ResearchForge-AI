@@ -18,7 +18,6 @@ import {
   Sparkles,
   TrendingUp,
   Clock,
-  CheckCircle2,
   FileSpreadsheet,
   Cpu,
   Layers,
@@ -37,17 +36,17 @@ export function RightDashboard() {
     e.preventDefault();
     if (!topicInput.trim()) return;
     startResearch(topicInput.trim());
-    router.push("/research");
+    router.push("/dashboard/research");
   };
 
   const navItems = [
     { label: "Dashboard", icon: LayoutDashboard, active: true, href: "/dashboard" },
-    { label: "New Research", icon: PlusCircle, href: "/research" },
-    { label: "My Research", icon: FolderLock, href: "/sessions" },
-    { label: "Agents", icon: Bot, href: "/agents" },
-    { label: "Reports", icon: FileText, href: "/reports" },
-    { label: "Sandbox", icon: Terminal, href: "/sandbox" },
-    { label: "Settings", icon: Settings, href: "/settings" },
+    { label: "New Research", icon: PlusCircle, href: "/dashboard/research" },
+    { label: "My Research", icon: FolderLock, href: "/dashboard/sessions" },
+    { label: "Agents", icon: Bot, href: "/dashboard/agents" },
+    { label: "Reports", icon: FileText, href: "/dashboard/reports" },
+    { label: "Sandbox", icon: Terminal, href: "/dashboard/sandbox" },
+    { label: "Settings", icon: Settings, href: "/dashboard/settings" },
   ];
 
   const recentResearchList = [
@@ -293,7 +292,7 @@ export function RightDashboard() {
           <div className="lg:col-span-7 rounded-2xl border border-[#1e293b]/90 bg-[#090e1a]/80 p-4 space-y-3">
             <div className="flex items-center justify-between">
               <h3 className="text-xs font-bold text-white font-sans">Recent Research</h3>
-              <Link href="/sessions" className="text-[11px] font-sans text-purple-400 hover:underline">
+              <Link href="/dashboard/sessions" className="text-[11px] font-sans text-purple-400 hover:underline">
                 View all
               </Link>
             </div>
@@ -337,7 +336,7 @@ export function RightDashboard() {
           <div className="lg:col-span-5 rounded-2xl border border-[#1e293b]/90 bg-[#090e1a]/80 p-4 space-y-3">
             <div className="flex items-center justify-between">
               <h3 className="text-xs font-bold text-white font-sans">Active Agents</h3>
-              <Link href="/agents" className="text-[11px] font-sans text-purple-400 hover:underline">
+              <Link href="/dashboard/agents" className="text-[11px] font-sans text-purple-400 hover:underline">
                 View all
               </Link>
             </div>

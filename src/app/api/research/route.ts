@@ -30,7 +30,7 @@ export async function POST(request: Request) {
       data: session,
       message: "TrueForge 7-Stage Multi-Agent pipeline initialized.",
     });
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       { success: false, error: "Failed to initialize research session" },
       { status: 500 }

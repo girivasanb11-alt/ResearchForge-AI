@@ -9,6 +9,7 @@ import { HumanApprovalModal } from "@/features/research/HumanApprovalModal";
 import { useResearch } from "@/lib/store";
 import { Sparkles, Terminal, ArrowRight, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ResearchDepth, ResearchScope } from "@/types/research";
 import Link from "next/link";
 
 export default function DashboardResearchPage() {
@@ -23,8 +24,8 @@ export default function DashboardResearchPage() {
     cancelResearch,
   } = useResearch();
 
-  const handleStart = (topic: string) => {
-    startResearch(topic);
+  const handleStart = (topic: string, depth?: ResearchDepth, scope?: ResearchScope[]) => {
+    startResearch(topic, depth, scope);
   };
 
   const isRunningOrPending =
@@ -62,7 +63,7 @@ export default function DashboardResearchPage() {
         {/* 1. Research Input Launcher */}
         <section>
           <NewResearchInput
-            onStartResearch={handleStart}
+            onStart={handleStart}
             isLoading={activeAgentStatus === "searching" || activeAgentStatus === "analyzing"}
           />
         </section>
