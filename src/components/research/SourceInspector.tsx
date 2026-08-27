@@ -89,57 +89,65 @@ export function SourceInspector({ sources }: SourceInspectorProps) {
         </div>
       </div>
 
-      {/* Sources List */}
-      <div className="space-y-3 max-h-[450px] overflow-y-auto pr-1">
-        {filteredSources.map((source) => {
-          const Icon = getSourceIcon(source.type);
-          return (
-            <div
-              key={source.id}
-              className="p-4 rounded-xl border border-border/70 bg-secondary/20 hover:bg-secondary/40 hover:border-border transition-all space-y-2 group"
-            >
-              <div className="flex items-start justify-between gap-3">
-                <div className="flex items-start gap-2.5 min-w-0">
-                  <div className="mt-0.5 p-1.5 rounded-lg bg-secondary border border-border/80 text-indigo-400 shrink-0">
-                    <Icon className="h-4 w-4" />
-                  </div>
-                  <div className="min-w-0">
-                    <a
-                      href={source.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-xs font-bold text-foreground hover:text-indigo-400 transition-colors flex items-center gap-1 group-hover:underline"
-                    >
-                      <span className="line-clamp-1">{source.title}</span>
-                      <ExternalLink className="h-3 w-3 shrink-0 opacity-60" />
-                    </a>
-                    <div className="text-[11px] text-muted-foreground flex flex-wrap items-center gap-2 mt-0.5 font-mono">
-                      <span className="text-indigo-400">{source.domain}</span>
-                      {source.publishedDate && <span>• {source.publishedDate}</span>}
-                      {source.authors && <span>• {source.authors.slice(0, 2).join(", ")}</span>}
+      {/* Sources List or Empty State */}
+      {filteredSources.length === 0 ? (
+        <div className="p-8 rounded-2xl border border-dashed border-border/70 text-center space-y-2">
+          <p className="text-xs font-mono text-muted-foreground">
+            No citation sources available. Waiting for real data.
+          </p>
+        </div>
+      ) : (
+        <div className="space-y-3 max-h-[450px] overflow-y-auto pr-1">
+          {filteredSources.map((source) => {
+            const Icon = getSourceIcon(source.type);
+            return (
+              <div
+                key={source.id}
+                className="p-4 rounded-xl border border-border/70 bg-secondary/20 hover:bg-secondary/40 hover:border-border transition-all space-y-2 group"
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex items-start gap-2.5 min-w-0">
+                    <div className="mt-0.5 p-1.5 rounded-lg bg-secondary border border-border/80 text-indigo-400 shrink-0">
+                      <Icon className="h-4 w-4" />
                     </div>
+                    <div className="min-w-0">
+                      <a
+                        href={source.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-xs font-bold text-foreground hover:text-indigo-400 transition-colors flex items-center gap-1 group-hover:underline"
+                      >
+                        <span className="line-clamp-1">{source.title}</span>
+                        <ExternalLink className="h-3 w-3 shrink-0 opacity-60" />
+                      </a>
+                      <div className="text-[11px] text-muted-foreground flex flex-wrap items-center gap-2 mt-0.5 font-mono">
+                        <span className="text-indigo-400">{source.domain}</span>
+                        {source.publishedDate && <span>• {source.publishedDate}</span>}
+                        {source.authors && <span>• {source.authors.slice(0, 2).join(", ")}</span>}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-2 shrink-0">
+                    <Badge variant="success" className="text-[10px] font-mono">
+                      {source.relevanceScore}% Match
+                    </Badge>
+                    {source.verified && (
+                      <div title="Peer-reviewed & verified DOI">
+                        <ShieldCheck className="h-4 w-4 text-emerald-400" />
+                      </div>
+                    )}
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2 shrink-0">
-                  <Badge variant="success" className="text-[10px] font-mono">
-                    {source.relevanceScore}% Match
-                  </Badge>
-                  {source.verified && (
-                    <div title="Peer-reviewed & verified DOI">
-                      <ShieldCheck className="h-4 w-4 text-emerald-400" />
-                    </div>
-                  )}
-                </div>
+                <p className="text-xs text-muted-foreground line-clamp-2 italic bg-secondary/30 p-2 rounded-lg border border-border/40 font-sans">
+                  &ldquo;{source.snippet}&rdquo;
+                </p>
               </div>
-
-              <p className="text-xs text-muted-foreground line-clamp-2 italic bg-secondary/30 p-2 rounded-lg border border-border/40 font-sans">
-                &ldquo;{source.snippet}&rdquo;
-              </p>
-            </div>
-          );
-        })}
-      </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }

@@ -1,125 +1,58 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import Link from "next/link";
-import { Search, ArrowRight, ShieldCheck, Sparkles, Clock } from "lucide-react";
+import { BookOpen } from "lucide-react";
 import { useResearch } from "@/lib/store";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 
 export default function ReportsGalleryPage() {
   const { reports } = useResearch();
-  const [search, setSearch] = useState("");
-  const [selectedTag, setSelectedTag] = useState<string>("all");
-
-  const tags = ["all", "Energy Storage", "Artificial Intelligence", "Metabolic Therapeutics"];
-
-  const filteredReports = reports.filter((r) => {
-    const matchesSearch =
-      r.title.toLowerCase().includes(search.toLowerCase()) ||
-      r.summary.toLowerCase().includes(search.toLowerCase()) ||
-      r.query.toLowerCase().includes(search.toLowerCase());
-    return matchesSearch;
-  });
 
   return (
-    <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-10">
+    <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-8">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-border/80">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-border/80">
         <div>
           <div className="flex items-center gap-2 text-xs font-mono text-muted-foreground mb-1">
             <Link href="/" className="hover:text-foreground">Home</Link>
             <span>/</span>
-            <span className="text-foreground font-semibold">Reports Dossiers</span>
+            <span className="text-foreground font-semibold">Reports</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground">
-            Synthesized Research Dossiers
+          <h1 className="text-2xl font-bold tracking-tight text-foreground font-sans">
+            Research Reports
           </h1>
-          <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">
-            Explore verified deep research dossiers across academic, patent, and market corpora.
-          </p>
         </div>
-
-        <Link href="/research">
-          <Button variant="glow" size="sm" className="flex items-center gap-2 font-semibold">
-            <Sparkles className="h-4 w-4" />
-            <span>Generate New Dossier</span>
-          </Button>
-        </Link>
       </div>
 
-      {/* Search & Filter Bar */}
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-        <div className="relative w-full sm:w-80">
-          <input
-            type="text"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search dossiers, queries, findings..."
-            className="w-full h-10 rounded-xl border border-border bg-card px-3.5 pl-9 text-xs placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-indigo-500"
-          />
-          <Search className="h-4 w-4 text-muted-foreground absolute left-3 top-3" />
+      {/* Empty State */}
+      {reports.length === 0 ? (
+        <div className="rounded-3xl border border-dashed border-border bg-card/40 p-16 text-center space-y-4">
+          <div className="mx-auto h-12 w-12 rounded-2xl bg-secondary/60 flex items-center justify-center text-muted-foreground">
+            <BookOpen className="h-6 w-6 text-muted-foreground/60" />
+          </div>
+          <div className="space-y-1">
+            <h2 className="text-base font-bold text-foreground">
+              No reports generated
+            </h2>
+            <p className="text-xs font-mono text-muted-foreground">
+              Waiting for real data. Research sessions and dossiers will appear here.
+            </p>
+          </div>
         </div>
-
-        <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
-          {tags.map((tag) => (
-            <button
-              key={tag}
-              onClick={() => setSelectedTag(tag)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-mono transition-colors capitalize ${
-                selectedTag === tag
-                  ? "bg-secondary text-indigo-400 font-bold border border-border"
-                  : "text-muted-foreground hover:bg-secondary/50"
-              }`}
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {reports.map((report) => (
+            <Link
+              key={report.id}
+              href={`/report/${report.id}`}
+              className="p-5 rounded-2xl border border-border bg-card/60 hover:bg-card transition-colors block space-y-2"
             >
-              {tag}
-            </button>
+              <h3 className="text-sm font-bold text-foreground line-clamp-1">{report.title}</h3>
+              <p className="text-xs text-muted-foreground line-clamp-2">{report.summary}</p>
+            </Link>
           ))}
         </div>
-      </div>
-
-      {/* Reports Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredReports.map((report) => (
-          <div
-            key={report.id}
-            className="rounded-3xl border border-border/80 bg-card/80 p-6 flex flex-col justify-between hover:border-indigo-500/50 hover:shadow-xl hover:shadow-indigo-500/5 transition-all group backdrop-blur-md"
-          >
-            <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <Badge variant="cyan" className="text-[10px] font-mono">
-                  {report.depth.toUpperCase()}
-                </Badge>
-                <div className="flex items-center gap-1 text-[11px] font-mono text-emerald-400">
-                  <ShieldCheck className="h-3.5 w-3.5" />
-                  <span>{report.confidenceScore}%</span>
-                </div>
-              </div>
-
-              <h3 className="text-base font-bold text-foreground group-hover:text-indigo-400 transition-colors line-clamp-2">
-                {report.title}
-              </h3>
-              <p className="text-xs text-muted-foreground leading-relaxed line-clamp-3">
-                {report.summary}
-              </p>
-            </div>
-
-            <div className="pt-4 mt-6 border-t border-border/50 flex items-center justify-between text-xs font-mono">
-              <span className="text-muted-foreground flex items-center gap-1">
-                <Clock className="h-3 w-3" />
-                {report.readTimeMinutes} min read
-              </span>
-              <Link
-                href={`/report/${report.id}`}
-                className="text-indigo-400 font-semibold group-hover:translate-x-0.5 transition-transform flex items-center gap-1"
-              >
-                <span>Read Dossier</span>
-                <ArrowRight className="h-3 w-3" />
-              </Link>
-            </div>
-          </div>
-        ))}
-      </div>
+      )}
     </div>
   );
 }

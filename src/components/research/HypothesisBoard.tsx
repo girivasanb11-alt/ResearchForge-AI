@@ -64,34 +64,42 @@ export function HypothesisBoard({ hypotheses }: HypothesisBoardProps) {
         </div>
       </div>
 
-      <div className="space-y-3">
-        {hypotheses.map((hyp, i) => (
-          <div
-            key={hyp.id}
-            className="p-4 rounded-xl border border-border/70 bg-secondary/20 space-y-3"
-          >
-            <div className="flex items-start justify-between gap-3">
-              <div className="flex items-start gap-2.5">
-                <span className="text-xs font-mono font-bold text-indigo-400 mt-0.5">
-                  H{i + 1}:
-                </span>
-                <p className="text-xs text-foreground font-medium leading-relaxed">
-                  {hyp.statement}
-                </p>
+      {hypotheses.length === 0 ? (
+        <div className="p-8 rounded-2xl border border-dashed border-border/70 text-center space-y-2">
+          <p className="text-xs font-mono text-muted-foreground">
+            No active hypotheses under test. Waiting for real data.
+          </p>
+        </div>
+      ) : (
+        <div className="space-y-3">
+          {hypotheses.map((hyp, i) => (
+            <div
+              key={hyp.id}
+              className="p-4 rounded-xl border border-border/70 bg-secondary/20 space-y-3"
+            >
+              <div className="flex items-start justify-between gap-3">
+                <div className="flex items-start gap-2.5">
+                  <span className="text-xs font-mono font-bold text-indigo-400 mt-0.5">
+                    H{i + 1}:
+                  </span>
+                  <p className="text-xs text-foreground font-medium leading-relaxed">
+                    {hyp.statement}
+                  </p>
+                </div>
+                {getStatusBadge(hyp.status)}
               </div>
-              {getStatusBadge(hyp.status)}
-            </div>
 
-            <div className="space-y-1 pt-1 border-t border-border/40">
-              <div className="flex items-center justify-between text-[11px] font-mono text-muted-foreground">
-                <span>Empirical Confidence:</span>
-                <span className="text-indigo-400 font-bold">{hyp.confidence}%</span>
+              <div className="space-y-1 pt-1 border-t border-border/40">
+                <div className="flex items-center justify-between text-[11px] font-mono text-muted-foreground">
+                  <span>Empirical Confidence:</span>
+                  <span className="text-indigo-400 font-bold">{hyp.confidence}%</span>
+                </div>
+                <Progress value={hyp.confidence} className="h-1.5" />
               </div>
-              <Progress value={hyp.confidence} className="h-1.5" />
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
