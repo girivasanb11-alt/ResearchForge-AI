@@ -48,7 +48,7 @@ export default function ReportsGalleryPage() {
               className="p-5 rounded-2xl border border-border bg-card/60 hover:bg-card transition-colors block space-y-2"
             >
               <h3 className="text-sm font-bold text-foreground line-clamp-1">{report.title}</h3>
-              <p className="text-xs text-muted-foreground line-clamp-2">{report.summary}</p>
+              <p className="text-xs text-muted-foreground line-clamp-2">{report.executiveSummary}</p>
             </Link>
           ))}
         </div>
