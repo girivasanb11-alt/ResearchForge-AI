@@ -4,31 +4,37 @@ import React, { useMemo } from "react";
 
 export function StarField() {
   const stars = useMemo(() => {
-    return Array.from({ length: 60 }).map((_, i) => ({
+    return Array.from({ length: 70 }).map((_, i) => ({
       id: i,
       x: Math.random() * 100,
       y: Math.random() * 100,
-      size: Math.random() * 2 + 1,
-      duration: Math.random() * 4 + 3,
-      delay: Math.random() * 3,
-      opacity: Math.random() * 0.6 + 0.2,
+      size: Math.random() * 2 + 0.8,
+      duration: Math.random() * 5 + 3,
+      delay: Math.random() * 4,
+      opacity: Math.random() * 0.5 + 0.15,
     }));
   }, []);
 
   return (
-    <div className="fixed inset-0 pointer-events-none -z-20 overflow-hidden">
-      {/* Dark Obsidian & Midnight Fog Background */}
-      <div className="absolute inset-0 bg-[#030712] bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(124,58,237,0.15),rgba(5,8,22,0.95))]" />
+    <div className="fixed inset-0 pointer-events-none -z-20 overflow-hidden select-none">
+      {/* Deep Obsidian Background Base */}
+      <div className="absolute inset-0 bg-[#030612]" />
 
-      {/* Atmospheric Fog Layers */}
-      <div className="absolute top-0 left-1/4 w-[600px] h-[400px] bg-gradient-to-br from-indigo-600/10 via-purple-700/5 to-transparent rounded-full blur-3xl" />
-      <div className="absolute bottom-1/4 right-1/4 w-[700px] h-[500px] bg-gradient-to-tl from-cyan-500/10 via-indigo-600/5 to-transparent rounded-full blur-3xl" />
+      {/* Atmospheric Glowing Radial Vignettes matching reference */}
+      {/* Bottom-left glow under particle wave */}
+      <div className="absolute -bottom-20 -left-20 w-[800px] h-[600px] bg-gradient-to-tr from-purple-900/30 via-indigo-950/20 to-transparent rounded-full blur-[120px]" />
+      
+      {/* Top-left glow behind iridescent bubble */}
+      <div className="absolute -top-20 left-1/4 w-[500px] h-[500px] bg-gradient-to-br from-indigo-800/15 via-purple-900/10 to-transparent rounded-full blur-[100px]" />
+
+      {/* Center-right glow behind dashboard */}
+      <div className="absolute top-1/3 right-10 w-[700px] h-[600px] bg-gradient-to-tl from-cyan-950/20 via-indigo-950/15 to-transparent rounded-full blur-[130px]" />
 
       {/* Star Particles */}
       {stars.map((s) => (
         <div
           key={s.id}
-          className="absolute rounded-full bg-white animate-pulse"
+          className="absolute rounded-full bg-white/90 animate-pulse"
           style={{
             left: `${s.x}%`,
             top: `${s.y}%`,
