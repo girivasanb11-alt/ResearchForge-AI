@@ -1,10 +1,23 @@
 "use client";
 
-import React, { useMemo } from "react";
+import React, { useEffect, useState } from "react";
+
+interface Star {
+  id: number;
+  x: number;
+  y: number;
+  size: number;
+  duration: number;
+  delay: number;
+  opacity: number;
+}
 
 export function StarField() {
-  const stars = useMemo(() => {
-    return Array.from({ length: 70 }).map((_, i) => ({
+  const [stars, setStars] = useState<Star[]>([]);
+
+  useEffect(() => {
+    // Generate star positions client-side to prevent SSR hydration mismatch
+    const generatedStars = Array.from({ length: 70 }).map((_, i) => ({
       id: i,
       x: Math.random() * 100,
       y: Math.random() * 100,
@@ -13,6 +26,7 @@ export function StarField() {
       delay: Math.random() * 4,
       opacity: Math.random() * 0.5 + 0.15,
     }));
+    setStars(generatedStars);
   }, []);
 
   return (
@@ -23,14 +37,14 @@ export function StarField() {
       {/* Atmospheric Glowing Radial Vignettes matching reference */}
       {/* Bottom-left glow under particle wave */}
       <div className="absolute -bottom-20 -left-20 w-[800px] h-[600px] bg-gradient-to-tr from-purple-900/30 via-indigo-950/20 to-transparent rounded-full blur-[120px]" />
-      
+
       {/* Top-left glow behind iridescent bubble */}
       <div className="absolute -top-20 left-1/4 w-[500px] h-[500px] bg-gradient-to-br from-indigo-800/15 via-purple-900/10 to-transparent rounded-full blur-[100px]" />
 
       {/* Center-right glow behind dashboard */}
       <div className="absolute top-1/3 right-10 w-[700px] h-[600px] bg-gradient-to-tl from-cyan-950/20 via-indigo-950/15 to-transparent rounded-full blur-[130px]" />
 
-      {/* Star Particles */}
+      {/* Star Particles - Rendered client-side only */}
       {stars.map((s) => (
         <div
           key={s.id}
