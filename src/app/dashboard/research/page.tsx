@@ -17,10 +17,9 @@ export default function DashboardResearchPage() {
     currentSession,
     activeStages,
     activeAgentStatus,
-    isApprovalModalOpen,
     setIsApprovalModalOpen,
     startResearch,
-    approveStageAndContinue,
+    cancelResearch,
   } = useResearch();
 
   const handleStart = (topic: string, depth?: ResearchDepth, scope?: ResearchScope[]) => {
@@ -122,12 +121,7 @@ export default function DashboardResearchPage() {
         )}
 
         {/* Stage 6 Human Approval Modal */}
-        <HumanApprovalModal
-          isOpen={isApprovalModalOpen}
-          onClose={() => setIsApprovalModalOpen(false)}
-          onApprove={approveStageAndContinue}
-          topic={currentSession?.topic || "Research Topic"}
-        />
+        <HumanApprovalModal />
       </div>
     </DashboardLayout>
   );
