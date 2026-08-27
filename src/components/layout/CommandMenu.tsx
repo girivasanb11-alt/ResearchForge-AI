@@ -17,7 +17,7 @@ import { useResearch } from "@/lib/store";
 
 export function CommandMenu() {
   const router = useRouter();
-  const { isCommandMenuOpen, setIsCommandMenuOpen, reports, startNewResearch } = useResearch();
+  const { isCommandMenuOpen, setIsCommandMenuOpen, reports, startResearch } = useResearch();
   const [search, setSearch] = useState("");
 
   const filteredReports = reports.filter(
@@ -35,7 +35,7 @@ export function CommandMenu() {
   const handleStartQuickSearch = (query: string) => {
     setIsCommandMenuOpen(false);
     setSearch("");
-    startNewResearch(query);
+    startResearch(query);
     router.push("/research");
   };
 
