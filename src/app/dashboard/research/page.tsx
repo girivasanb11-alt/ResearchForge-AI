@@ -21,7 +21,6 @@ export default function DashboardResearchPage() {
     setIsApprovalModalOpen,
     startResearch,
     approveStageAndContinue,
-    cancelResearch,
   } = useResearch();
 
   const handleStart = (topic: string, depth?: ResearchDepth, scope?: ResearchScope[]) => {
@@ -76,8 +75,7 @@ export default function DashboardResearchPage() {
               <div className="lg:col-span-8 space-y-4">
                 <AgentTimeline
                   stages={activeStages}
-                  activeStatus={activeAgentStatus}
-                  onCancel={cancelResearch}
+                  onOpenApproval={() => setIsApprovalModalOpen(true)}
                 />
               </div>
 
