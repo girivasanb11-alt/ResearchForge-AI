@@ -10,7 +10,6 @@ import {
   ShieldCheck,
   FileCheck2,
   CheckCircle2,
-  Clock,
   Terminal,
   Activity,
   Sparkles,

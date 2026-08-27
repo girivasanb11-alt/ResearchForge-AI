@@ -45,3 +45,9 @@ export function downloadMarkdownReport(report: ResearchReport) {
   link.click();
   document.body.removeChild(link);
 }
+
+export function printPdfReport() {
+  if (typeof window !== "undefined") {
+    window.print();
+  }
+}
