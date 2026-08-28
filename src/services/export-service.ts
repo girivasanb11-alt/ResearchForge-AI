@@ -1,12 +1,14 @@
 import { ResearchReport } from "@/types/research";
+import { downloadAsFile } from "@/lib/utils";
 
 export function exportReportToMarkdown(report: ResearchReport): string {
   let md = `# ${report.title}\n\n`;
-  md += `**Date**: ${report.createdAt} | **Investigation Depth**: ${report.depth.toUpperCase()} | **Empirical Confidence**: ${report.confidenceScore}%\n\n`;
-  md += `---\n\n`;
+  md += `> **Subtitle:** ${report.subtitle}\n`;
+  md += `> **Confidence Score:** ${report.confidenceScore}% | **Scope:** ${report.scope.join(", ")} | **Generated:** ${report.createdAt}\n\n`;
+
   md += `## 1. Executive Summary\n\n${report.executiveSummary}\n\n`;
-  md += `## 2. Market Dynamics & Capex Modeling\n\n${report.marketAnalysis}\n\n`;
-  md += `## 3. Architecture & Competitor Benchmarking\n\n${report.competitorAnalysis}\n\n`;
+  md += `## 2. Market Analysis\n\n${report.marketAnalysis}\n\n`;
+  md += `## 3. Competitor Analysis\n\n${report.competitorAnalysis}\n\n`;
 
   if (report.keyInsights && report.keyInsights.length > 0) {
     md += `## 4. Key Insights\n\n`;
@@ -18,7 +20,7 @@ export function exportReportToMarkdown(report: ResearchReport): string {
 
   if (report.recommendations && report.recommendations.length > 0) {
     md += `## 5. Recommendations\n\n`;
-    report.recommendations.forEach((rec) => {
+    report.recommendations.forEach((rec, idx) => {
       md += `- ${rec}\n`;
     });
     md += `\n`;
@@ -36,18 +38,9 @@ export function exportReportToMarkdown(report: ResearchReport): string {
 
 export function downloadMarkdownReport(report: ResearchReport) {
   const md = exportReportToMarkdown(report);
-  const blob = new Blob([md], { type: "text/markdown;charset=utf-8;" });
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement("a");
-  link.setAttribute("href", url);
-  link.setAttribute("download", `${report.title.toLowerCase().replace(/[^a-z0-9]/g, "-")}-dossier.md`);
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
+  downloadAsFile(`${report.id}.md`, md, "text/markdown");
 }
 
 export function printPdfReport() {
-  if (typeof window !== "undefined") {
-    window.print();
-  }
+  window.print();
 }
