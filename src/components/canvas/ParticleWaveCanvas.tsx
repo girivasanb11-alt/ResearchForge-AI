@@ -17,11 +17,13 @@ export function ParticleWaveCanvas() {
     // 1. SCENE, CAMERA, RENDERER
     // =========================================================================
     const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0x020617, 0.001);
+    // Deep obsidian/navy cosmic fog matching Layer 1 & 2
+    scene.fog = new THREE.FogExp2(0x030712, 0.001);
 
-    const camera = new THREE.PerspectiveCamera(55, width / height, 1, 3000);
-    camera.position.set(-50, 95, 320);
-    camera.lookAt(0, 25, 0);
+    const camera = new THREE.PerspectiveCamera(50, width / height, 1, 3000);
+    // Positioned to view the sweeping wave rising from bottom-left to center-right
+    camera.position.set(-60, 85, 300);
+    camera.lookAt(15, 20, 0);
 
     const renderer = new THREE.WebGLRenderer({
       antialias: true,
@@ -30,29 +32,38 @@ export function ParticleWaveCanvas() {
     });
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.15;
     container.appendChild(renderer.domElement);
 
     // =========================================================================
     // 2. CINEMATIC LIGHTING
     // =========================================================================
-    const ambientLight = new THREE.AmbientLight(0x0f172a, 1.2);
+    const ambientLight = new THREE.AmbientLight(0x0f172a, 1.5);
     scene.add(ambientLight);
 
-    const purplePoint = new THREE.PointLight(0x8b5cf6, 5, 600);
-    purplePoint.position.set(-120, 150, 100);
-    scene.add(purplePoint);
+    // Electric purple light from left
+    const purpleLight = new THREE.PointLight(0x8b5cf6, 6, 800);
+    purpleLight.position.set(-140, 160, 60);
+    scene.add(purpleLight);
 
-    const cyanPoint = new THREE.PointLight(0x38bdf8, 4, 600);
-    cyanPoint.position.set(140, 120, 70);
-    scene.add(cyanPoint);
+    // Neon cyan light from right
+    const cyanLight = new THREE.PointLight(0x38bdf8, 6, 800);
+    cyanLight.position.set(160, 120, 60);
+    scene.add(cyanLight);
+
+    // Magenta backlight for volumetric feel
+    const magentaLight = new THREE.PointLight(0xd946ef, 3, 500);
+    magentaLight.position.set(0, -30, 120);
+    scene.add(magentaLight);
 
     // =========================================================================
-    // 3. LAYER 3: HIGH-PERFORMANCE 3D PARTICLE WAVE OCEAN (6,000 GPU PARTICLES)
+    // 3. LAYER 3: 3D PARTICLE WAVE OCEAN (9,600 GPU PARTICLES)
     // =========================================================================
-    const AMOUNT_X = 100;
-    const AMOUNT_Y = 60;
-    const SEPARATION_X = 18;
-    const SEPARATION_Y = 18;
+    const AMOUNT_X = 120;
+    const AMOUNT_Y = 80;
+    const SEPARATION_X = 16;
+    const SEPARATION_Y = 16;
     const numWaveParticles = AMOUNT_X * AMOUNT_Y;
 
     const wavePositions = new Float32Array(numWaveParticles * 3);
@@ -61,18 +72,19 @@ export function ParticleWaveCanvas() {
     const initialBaseX = new Float32Array(numWaveParticles);
     const initialBaseZ = new Float32Array(numWaveParticles);
 
-    // Curated Brand Color Palette
-    const colorViolet = new THREE.Color("#8B5CF6");  // Electric Violet
-    const colorPurple = new THREE.Color("#7C3AED");  // Deep Purple
-    const colorNeonBlue = new THREE.Color("#38BDF8"); // Neon Blue
-    const colorCyan = new THREE.Color("#22D3EE");     // Cyan Highlight
-    const colorMagenta = new THREE.Color("#D946EF");  // Pink Crest
+    // Exact reference palette
+    const colorViolet = new THREE.Color("#8B5CF6");    // Electric Violet
+    const colorDeepPurple = new THREE.Color("#7C3AED"); // Deep Purple
+    const colorNeonBlue = new THREE.Color("#38BDF8");   // Neon Blue
+    const colorCyan = new THREE.Color("#22D3EE");       // Cyan
+    const colorMagenta = new THREE.Color("#D946EF");    // Magenta
     const tempColor = new THREE.Color();
 
     let pIdx = 0;
     let sIdx = 0;
     for (let ix = 0; ix < AMOUNT_X; ix++) {
       for (let iy = 0; iy < AMOUNT_Y; iy++) {
+        // Position grid
         const xPos = ix * SEPARATION_X - (AMOUNT_X * SEPARATION_X) / 1.7;
         const zPos = iy * SEPARATION_Y - (AMOUNT_Y * SEPARATION_Y) / 2.0;
 
@@ -82,19 +94,19 @@ export function ParticleWaveCanvas() {
 
         initialBaseX[sIdx] = xPos;
         initialBaseZ[sIdx] = zPos;
-        waveScales[sIdx] = Math.random() * 2.0 + 3.0;
+        waveScales[sIdx] = Math.random() * 2.2 + 3.2;
 
-        // Diagonal gradient mapping
+        // Diagonal gradient: Left side purple/magenta, right side cyan/neon blue
         const u = ix / AMOUNT_X;
         const v = iy / AMOUNT_Y;
-        const gradientRatio = u * 0.55 + v * 0.45;
+        const gradientRatio = u * 0.6 + v * 0.4;
 
-        if (gradientRatio < 0.22) {
-          tempColor.copy(colorMagenta).lerp(colorViolet, gradientRatio / 0.22);
-        } else if (gradientRatio < 0.52) {
-          tempColor.copy(colorViolet).lerp(colorPurple, (gradientRatio - 0.22) / 0.3);
+        if (gradientRatio < 0.25) {
+          tempColor.copy(colorMagenta).lerp(colorViolet, gradientRatio / 0.25);
+        } else if (gradientRatio < 0.55) {
+          tempColor.copy(colorViolet).lerp(colorDeepPurple, (gradientRatio - 0.25) / 0.3);
         } else if (gradientRatio < 0.8) {
-          tempColor.copy(colorPurple).lerp(colorNeonBlue, (gradientRatio - 0.52) / 0.28);
+          tempColor.copy(colorDeepPurple).lerp(colorNeonBlue, (gradientRatio - 0.55) / 0.25);
         } else {
           tempColor.copy(colorNeonBlue).lerp(colorCyan, (gradientRatio - 0.8) / 0.2);
         }
@@ -123,8 +135,8 @@ export function ParticleWaveCanvas() {
         const radGrad = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
         radGrad.addColorStop(0, "rgba(255, 255, 255, 1.0)");
         radGrad.addColorStop(0.2, "rgba(217, 70, 239, 0.95)");
-        radGrad.addColorStop(0.45, "rgba(139, 92, 246, 0.6)");
-        radGrad.addColorStop(0.75, "rgba(56, 189, 248, 0.25)");
+        radGrad.addColorStop(0.5, "rgba(139, 92, 246, 0.6)");
+        radGrad.addColorStop(0.8, "rgba(56, 189, 248, 0.2)");
         radGrad.addColorStop(1, "rgba(0, 0, 0, 0)");
         ctx.fillStyle = radGrad;
         ctx.fillRect(0, 0, 64, 64);
@@ -135,61 +147,65 @@ export function ParticleWaveCanvas() {
     const particleTexture = createGlowTexture();
 
     const waveMaterial = new THREE.PointsMaterial({
-      size: 5.6,
+      size: 5.8,
       map: particleTexture,
       transparent: true,
       vertexColors: true,
       blending: THREE.AdditiveBlending,
       depthWrite: false,
-      opacity: 0.92,
+      opacity: 0.95,
     });
 
     const wavePoints = new THREE.Points(waveGeometry, waveMaterial);
     scene.add(wavePoints);
 
     // =========================================================================
-    // 4. LAYER 4: UPPER-CENTER HERO HOLOGRAPHIC RESEARCH CORE
+    // 4. LAYER 4: HERO HOLOGRAPHIC ORB (UPPER-RIGHT QUADRANT POSITION)
     // =========================================================================
     const heroOrbGroup = new THREE.Group();
-    heroOrbGroup.position.set(0, 75, 15);
+    // Offset to the right to frame header text on left
+    heroOrbGroup.position.set(85, 55, 20);
     scene.add(heroOrbGroup);
 
     // Inner Radiant Pulsing Core
-    const heroCoreGeo = new THREE.IcosahedronGeometry(24, 3);
+    const heroCoreGeo = new THREE.IcosahedronGeometry(25, 4);
     const heroCoreMat = new THREE.MeshStandardMaterial({
       color: new THREE.Color("#7C3AED"),
       emissive: new THREE.Color("#8B5CF6"),
-      emissiveIntensity: 0.9,
-      roughness: 0.15,
+      emissiveIntensity: 0.95,
+      roughness: 0.1,
       metalness: 0.85,
     });
     const heroCoreMesh = new THREE.Mesh(heroCoreGeo, heroCoreMat);
     heroOrbGroup.add(heroCoreMesh);
 
-    // Outer Glass Holographic Shell
-    const heroShellGeo = new THREE.IcosahedronGeometry(32, 2);
+    // Outer Glass Refraction Shell
+    const heroShellGeo = new THREE.IcosahedronGeometry(33, 3);
     const heroShellMat = new THREE.MeshPhysicalMaterial({
       color: new THREE.Color("#38BDF8"),
       emissive: new THREE.Color("#0284C7"),
-      emissiveIntensity: 0.3,
+      emissiveIntensity: 0.4,
       transparent: true,
-      opacity: 0.45,
+      opacity: 0.46,
       roughness: 0.05,
-      metalness: 0.1,
-      transmission: 0.9,
-      ior: 1.45,
+      metalness: 0.15,
+      transmission: 0.94,
+      ior: 1.5,
+      reflectivity: 0.9,
+      clearcoat: 1.0,
+      clearcoatRoughness: 0.08,
       wireframe: true,
     });
     const heroShellMesh = new THREE.Mesh(heroShellGeo, heroShellMat);
     heroOrbGroup.add(heroShellMesh);
 
-    // Gyroscopic Holographic Energy Rings
+    // Gyroscopic Holographic Rings
     const createOrbRing = (radius: number, color: string, rotX: number, rotY: number) => {
-      const rGeo = new THREE.TorusGeometry(radius, 0.65, 12, 80);
+      const rGeo = new THREE.TorusGeometry(radius, 0.7, 16, 120);
       const rMat = new THREE.MeshBasicMaterial({
         color: new THREE.Color(color),
         transparent: true,
-        opacity: 0.65,
+        opacity: 0.7,
         blending: THREE.AdditiveBlending,
       });
       const rMesh = new THREE.Mesh(rGeo, rMat);
@@ -199,71 +215,70 @@ export function ParticleWaveCanvas() {
       return rMesh;
     };
 
-    const ringA = createOrbRing(40, "#A855F7", Math.PI / 3, Math.PI / 6);
-    const ringB = createOrbRing(46, "#06B6D4", -Math.PI / 4, Math.PI / 4);
-    const ringC = createOrbRing(52, "#38BDF8", Math.PI / 2, 0);
+    const ringA = createOrbRing(42, "#C084FC", Math.PI / 3, Math.PI / 6);
+    const ringB = createOrbRing(49, "#22D3EE", -Math.PI / 4, Math.PI / 4);
+    const ringC = createOrbRing(56, "#38BDF8", Math.PI / 2, 0);
 
     // =========================================================================
-    // 5. LAYER 4: AUXILIARY FLOATING ENERGY SPHERES (DEPTH MULTI-PLANE)
+    // 5. LAYER 4: DYNAMIC FLOATING SPHERES (MATCHING IMAGE PLACEMENT)
     // =========================================================================
-    interface FloatingOrb {
+    interface FloatingSphere {
       mesh: THREE.Mesh;
       baseX: number;
       baseY: number;
       baseZ: number;
       speed: number;
       floatPhase: number;
-      orbitRadius: number;
+      radiusY: number;
     }
 
-    const floatingOrbs: FloatingOrb[] = [];
-    const orbColors = ["#8B5CF6", "#38BDF8", "#D946EF", "#06B6D4"];
+    const floatingSpheres: FloatingSphere[] = [];
 
-    for (let o = 0; o < 6; o++) {
-      const radius = Math.random() * 5 + 3.5;
-      const oGeo = new THREE.SphereGeometry(radius, 16, 16);
-      const orbColorHex = orbColors[o % orbColors.length];
-      const oMat = new THREE.MeshPhysicalMaterial({
-        color: new THREE.Color(orbColorHex),
-        emissive: new THREE.Color(orbColorHex),
+    const createFloatingSphere = (size: number, colorHex: string, bx: number, by: number, bz: number, speed: number) => {
+      const sGeo = new THREE.SphereGeometry(size, 24, 24);
+      const sMat = new THREE.MeshPhysicalMaterial({
+        color: new THREE.Color(colorHex),
+        emissive: new THREE.Color(colorHex),
         emissiveIntensity: 0.5,
         transparent: true,
-        opacity: 0.6,
+        opacity: 0.65,
         roughness: 0.1,
-        transmission: 0.7,
-        ior: 1.3,
+        transmission: 0.8,
+        ior: 1.35,
       });
-      const oMesh = new THREE.Mesh(oGeo, oMat);
+      const sMesh = new THREE.Mesh(sGeo, sMat);
+      sMesh.position.set(bx, by, bz);
+      scene.add(sMesh);
 
-      const bx = (Math.random() - 0.5) * 600;
-      const by = Math.random() * 140 - 10;
-      const bz = (Math.random() - 0.5) * 350 - 40;
-
-      oMesh.position.set(bx, by, bz);
-      scene.add(oMesh);
-
-      floatingOrbs.push({
-        mesh: oMesh,
+      floatingSpheres.push({
+        mesh: sMesh,
         baseX: bx,
         baseY: by,
         baseZ: bz,
-        speed: Math.random() * 0.35 + 0.25,
+        speed,
         floatPhase: Math.random() * Math.PI * 2,
-        orbitRadius: Math.random() * 20 + 8,
+        radiusY: Math.random() * 12 + 6,
       });
-    }
+    };
+
+    // Medium pink-purple orb floating on middle-left
+    createFloatingSphere(9, "#D946EF", -160, 40, -40, 0.45);
+    // Cyan-blue orb floating on upper-right
+    createFloatingSphere(7, "#38BDF8", 180, 65, -30, 0.38);
+    // Small purple orb floating near bottom-center
+    createFloatingSphere(4.5, "#8B5CF6", -20, -10, 60, 0.52);
 
     // =========================================================================
-    // 6. AMBIENT MICRO-SPARKLE DUST FIELD (LAYER 5)
+    // 6. AMBIENT MICRO-PARTICLES (LAYER 5)
     // =========================================================================
-    const sparkCount = 80;
+    const sparkCount = 120;
     const sparkGeo = new THREE.BufferGeometry();
     const sparkPositions = new Float32Array(sparkCount * 3);
     const sparkColors = new Float32Array(sparkCount * 3);
 
     for (let sp = 0; sp < sparkCount; sp++) {
-      sparkPositions[sp * 3] = (Math.random() - 0.5) * 1000;
-      sparkPositions[sp * 3 + 1] = Math.random() * 240 - 30;
+      sparkPositions[sp * 3] = (Math.random() - 0.5) * 1100;
+      sparkPositions[sp * 3 + 1] = Math.random() * 260 - 30;
       sparkPositions[sp * 3 + 2] = (Math.random() - 0.5) * 600;
 
       const isCyan = Math.random() > 0.45;
@@ -277,7 +292,7 @@ export function ParticleWaveCanvas() {
     sparkGeo.setAttribute("color", new THREE.BufferAttribute(sparkColors, 3));
 
     const sparkMat = new THREE.PointsMaterial({
-      size: 8,
+      size: 7,
       map: particleTexture,
       transparent: true,
       vertexColors: true,
@@ -290,7 +305,7 @@ export function ParticleWaveCanvas() {
     scene.add(sparkParticles);
 
     // =========================================================================
-    // 7. MOUSE DAMPING & PARALLAX
+    // 7. MOUSE PARALLAX & DAMPING
     // =========================================================================
     let mouseX = 0;
     let mouseY = 0;
@@ -319,7 +334,7 @@ export function ParticleWaveCanvas() {
     window.addEventListener("resize", onWindowResize);
 
     // =========================================================================
-    // 9. 60 FPS MULTI-HARMONIC ANIMATION LOOP
+    // 9. ANIMATION LOOP
     // =========================================================================
     const clock = new THREE.Clock();
     let animationFrameId: number;
@@ -331,23 +346,23 @@ export function ParticleWaveCanvas() {
       // Smooth camera parallax
       targetX += (mouseX - targetX) * 0.02;
       targetY += (mouseY - targetY) * 0.02;
-      camera.position.x = -50 + targetX * 0.12;
-      camera.position.y = 95 + -targetY * 0.08;
-      camera.lookAt(0, 25, 0);
+      camera.position.x = -60 + targetX * 0.12;
+      camera.position.y = 85 + -targetY * 0.08;
+      camera.lookAt(15, 20, 0);
 
       // Fast, vectorized wave math
       const posArray = waveGeometry.attributes.position.array as Float32Array;
       let idx = 0;
 
       for (let ix = 0; ix < AMOUNT_X; ix++) {
-        const u = ix * 0.16;
+        const u = ix * 0.15;
         for (let iy = 0; iy < AMOUNT_Y; iy++) {
-          const v = iy * 0.24;
-          const t = elapsedTime * 0.85;
+          const v = iy * 0.22;
+          const t = elapsedTime * 0.9;
 
           posArray[idx + 1] =
-            Math.sin(u + t * 1.1) * 42 +
-            Math.cos(v + t * 0.9) * 36 +
+            Math.sin(u + t * 1.15) * 44 +
+            Math.cos(v + t * 0.95) * 36 +
             Math.sin((u + v) * 0.5 + t * 0.7) * 24;
 
           idx += 3;
@@ -356,32 +371,32 @@ export function ParticleWaveCanvas() {
       waveGeometry.attributes.position.needsUpdate = true;
 
       // Hero Holographic Core
-      const heroPulse = 1 + Math.sin(elapsedTime * 1.5) * 0.04;
+      const heroPulse = 1 + Math.sin(elapsedTime * 1.55) * 0.04;
       heroCoreMesh.scale.set(heroPulse, heroPulse, heroPulse);
-      heroCoreMesh.rotation.y = elapsedTime * 0.3;
-      heroCoreMesh.rotation.x = elapsedTime * 0.15;
+      heroCoreMesh.rotation.y = elapsedTime * 0.32;
+      heroCoreMesh.rotation.x = elapsedTime * 0.16;
 
-      heroShellMesh.rotation.y = -elapsedTime * 0.2;
-      heroShellMesh.rotation.z = elapsedTime * 0.25;
+      heroShellMesh.rotation.y = -elapsedTime * 0.22;
+      heroShellMesh.rotation.z = elapsedTime * 0.26;
 
-      ringA.rotation.z = elapsedTime * 0.4;
-      ringB.rotation.z = -elapsedTime * 0.35;
-      ringC.rotation.x = Math.PI / 2 + Math.sin(elapsedTime * 0.8) * 0.15;
-      ringC.rotation.z = elapsedTime * 0.2;
+      ringA.rotation.z = elapsedTime * 0.42;
+      ringB.rotation.z = -elapsedTime * 0.36;
+      ringC.rotation.x = Math.PI / 2 + Math.sin(elapsedTime * 0.85) * 0.18;
+      ringC.rotation.z = elapsedTime * 0.22;
 
-      heroOrbGroup.position.y = 75 + Math.sin(elapsedTime * 0.75) * 6;
+      heroOrbGroup.position.y = 55 + Math.sin(elapsedTime * 0.75) * 6;
 
-      // Auxiliary Floating Orbs
-      floatingOrbs.forEach((orb) => {
-        const ot = elapsedTime * orb.speed + orb.floatPhase;
-        orb.mesh.position.y = orb.baseY + Math.sin(ot) * 12;
-        orb.mesh.position.x = orb.baseX + Math.cos(ot * 0.7) * orb.orbitRadius;
+      // Floating auxiliary spheres
+      floatingSpheres.forEach((sphere) => {
+        const st = elapsedTime * sphere.speed + sphere.floatPhase;
+        sphere.mesh.position.y = sphere.baseY + Math.sin(st) * sphere.radiusY;
+        sphere.mesh.position.x = sphere.baseX + Math.cos(st * 0.6) * 12;
       });
 
       // Ambient Sparkles
       const sparkPosArray = sparkGeo.attributes.position.array as Float32Array;
       for (let s = 0; s < sparkCount; s++) {
-        sparkPosArray[s * 3 + 1] += Math.sin(elapsedTime * 0.8 + s) * 0.25;
+        sparkPosArray[s * 3 + 1] += Math.sin(elapsedTime * 0.8 + s) * 0.22;
       }
       sparkGeo.attributes.position.needsUpdate = true;
 
