@@ -38,21 +38,6 @@ export default function LandingPage() {
             <Logo textClassName="text-base font-bold text-white tracking-tight" />
           </Link>
 
-          <nav className="hidden md:flex items-center gap-8 text-xs font-sans text-slate-300">
-            <a href="#features" className="hover:text-white transition-colors">
-              Platform Features
-            </a>
-            <a href="#pipeline" className="hover:text-white transition-colors">
-              7-Stage Pipeline
-            </a>
-            <Link href="/dashboard/agents" className="hover:text-white transition-colors">
-              Agent Swarms
-            </Link>
-            <Link href="/dashboard/sandbox" className="hover:text-white transition-colors">
-              Python Sandbox
-            </Link>
-          </nav>
-
           <div className="flex items-center gap-3">
             <Link href="/auth/signin">
               <Button variant="ghost" size="sm" className="text-xs font-sans text-slate-300 hover:text-white">

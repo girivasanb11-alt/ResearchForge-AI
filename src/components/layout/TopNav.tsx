@@ -124,8 +124,6 @@ export function TopNav() {
             )}
           </div>
 
-          <ThemeToggle />
-
           {/* User Profile / Auth State */}
           {isAuthenticated && user ? (
             <div className="relative">
