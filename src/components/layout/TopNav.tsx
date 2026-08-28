@@ -11,7 +11,6 @@ import {
   Layers,
   Bot,
 } from "lucide-react";
-import { ThemeToggle } from "./ThemeToggle";
 import { useAuth } from "@/hooks/use-auth";
 import { useResearch } from "@/lib/store";
 import { Badge } from "@/components/ui/badge";
