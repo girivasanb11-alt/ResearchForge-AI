@@ -26,7 +26,7 @@ export default function SignInPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#030712] text-foreground flex flex-col justify-between relative overflow-hidden px-4 py-8">
+    <div className="min-h-screen bg-transparent text-foreground flex flex-col justify-between relative overflow-hidden px-4 py-8">
       <StarField />
 
       {/* Top Header */}

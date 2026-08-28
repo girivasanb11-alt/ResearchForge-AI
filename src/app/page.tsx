@@ -24,7 +24,7 @@ import { Button } from "@/components/ui/button";
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-[#030612] text-foreground relative overflow-x-hidden flex flex-col justify-between selection:bg-purple-500 selection:text-white">
+    <div className="min-h-screen bg-transparent text-foreground relative overflow-x-hidden flex flex-col justify-between selection:bg-purple-500 selection:text-white">
       {/* 1. Animated Atmospheric Background & Stars */}
       <StarField />
 
