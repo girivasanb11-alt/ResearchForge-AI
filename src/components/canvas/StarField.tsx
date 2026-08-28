@@ -16,35 +16,38 @@ export function StarField() {
   const [stars, setStars] = useState<Star[]>([]);
 
   useEffect(() => {
-    // Generate star positions client-side to prevent SSR hydration mismatch
-    const generatedStars = Array.from({ length: 70 }).map((_, i) => ({
+    // Generate star coordinates client-side to prevent SSR hydration mismatches
+    const generatedStars = Array.from({ length: 85 }).map((_, i) => ({
       id: i,
       x: Math.random() * 100,
       y: Math.random() * 100,
-      size: Math.random() * 2 + 0.8,
+      size: Math.random() * 2.2 + 0.6,
       duration: Math.random() * 5 + 3,
       delay: Math.random() * 4,
-      opacity: Math.random() * 0.5 + 0.15,
+      opacity: Math.random() * 0.45 + 0.2,
     }));
     setStars(generatedStars);
   }, []);
 
   return (
     <div className="fixed inset-0 pointer-events-none -z-20 overflow-hidden select-none">
-      {/* Deep Obsidian Background Base */}
-      <div className="absolute inset-0 bg-[#030612]" />
+      {/* LAYER 1: Deep Space Background Base (#020617 -> #030712 -> #050816) */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[#020617] via-[#030712] to-[#050816]" />
 
-      {/* Atmospheric Glowing Radial Vignettes matching reference */}
-      {/* Bottom-left glow under particle wave */}
-      <div className="absolute -bottom-20 -left-20 w-[800px] h-[600px] bg-gradient-to-tr from-purple-900/30 via-indigo-950/20 to-transparent rounded-full blur-[120px]" />
+      {/* LAYER 2: Atmospheric Volumetric Drifting Fog Glows */}
+      {/* 1. Bottom-Left Electric Purple Volumetric Fog */}
+      <div className="absolute -bottom-28 -left-28 w-[950px] h-[750px] bg-gradient-to-tr from-purple-900/35 via-indigo-950/25 to-transparent rounded-full blur-[140px] animate-pulse duration-1000" />
 
-      {/* Top-left glow behind iridescent bubble */}
-      <div className="absolute -top-20 left-1/4 w-[500px] h-[500px] bg-gradient-to-br from-indigo-800/15 via-purple-900/10 to-transparent rounded-full blur-[100px]" />
+      {/* 2. Top-Center Ethereal Blue/Purple Halo */}
+      <div className="absolute -top-32 left-1/3 w-[700px] h-[600px] bg-gradient-to-br from-indigo-800/20 via-purple-900/15 to-transparent rounded-full blur-[130px]" />
 
-      {/* Center-right glow behind dashboard */}
-      <div className="absolute top-1/3 right-10 w-[700px] h-[600px] bg-gradient-to-tl from-cyan-950/20 via-indigo-950/15 to-transparent rounded-full blur-[130px]" />
+      {/* 3. Center-Right Cyan Atmospheric Glow */}
+      <div className="absolute top-1/4 right-0 w-[800px] h-[700px] bg-gradient-to-tl from-cyan-950/25 via-indigo-950/20 to-transparent rounded-full blur-[150px]" />
 
-      {/* Star Particles - Rendered client-side only */}
+      {/* 4. Cinematic Soft Vignette Ring */}
+      <div className="absolute inset-0 bg-radial-gradient pointer-events-none opacity-40 mix-blend-multiply" />
+
+      {/* Star Particles */}
       {stars.map((s) => (
         <div
           key={s.id}

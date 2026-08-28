@@ -18,48 +18,55 @@ export function HolographicOrb() {
     const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 1000);
     camera.position.z = 240;
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    const renderer = new THREE.WebGLRenderer({
+      antialias: true,
+      alpha: true,
+      powerPreference: "high-performance",
+    });
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     container.appendChild(renderer.domElement);
 
-    // 1. Core Energy Sphere
-    const coreGeo = new THREE.IcosahedronGeometry(48, 4);
+    // 1. Radiant Energy Core
+    const coreGeo = new THREE.IcosahedronGeometry(46, 4);
     const coreMat = new THREE.MeshStandardMaterial({
       color: new THREE.Color("#7C3AED"),
-      emissive: new THREE.Color("#4C1D95"),
-      emissiveIntensity: 0.8,
+      emissive: new THREE.Color("#8B5CF6"),
+      emissiveIntensity: 0.95,
       roughness: 0.1,
-      metalness: 0.9,
-      wireframe: false,
+      metalness: 0.85,
     });
     const coreMesh = new THREE.Mesh(coreGeo, coreMat);
     scene.add(coreMesh);
 
-    // 2. Outer Glass Refraction Shell
-    const shellGeo = new THREE.IcosahedronGeometry(62, 3);
+    // 2. Outer Glass Holographic Refraction Shell (Apple Vision Pro cinematic quality)
+    const shellGeo = new THREE.IcosahedronGeometry(60, 3);
     const shellMat = new THREE.MeshPhysicalMaterial({
       color: new THREE.Color("#38BDF8"),
-      emissive: new THREE.Color("#0369A1"),
-      emissiveIntensity: 0.4,
+      emissive: new THREE.Color("#0284C7"),
+      emissiveIntensity: 0.35,
       transparent: true,
-      opacity: 0.45,
-      roughness: 0.1,
-      metalness: 0.2,
-      transmission: 0.9,
-      ior: 1.5,
+      opacity: 0.48,
+      roughness: 0.05,
+      metalness: 0.15,
+      transmission: 0.92,
+      ior: 1.48,
+      reflectivity: 0.9,
+      clearcoat: 1.0,
+      clearcoatRoughness: 0.1,
       wireframe: true,
     });
     const shellMesh = new THREE.Mesh(shellGeo, shellMat);
     scene.add(shellMesh);
 
-    // 3. Orbital Energy Rings
+    // 3. Gyroscopic Holographic Energy Rings
     const createRing = (radius: number, color: string, rotX: number, rotY: number) => {
-      const ringGeo = new THREE.TorusGeometry(radius, 0.8, 16, 100);
+      const ringGeo = new THREE.TorusGeometry(radius, 0.75, 16, 120);
       const ringMat = new THREE.MeshBasicMaterial({
         color: new THREE.Color(color),
         transparent: true,
-        opacity: 0.7,
+        opacity: 0.75,
+        blending: THREE.AdditiveBlending,
       });
       const ringMesh = new THREE.Mesh(ringGeo, ringMat);
       ringMesh.rotation.x = rotX;
@@ -68,23 +75,27 @@ export function HolographicOrb() {
       return ringMesh;
     };
 
-    const ring1 = createRing(80, "#A855F7", Math.PI / 3, Math.PI / 6);
-    const ring2 = createRing(92, "#06B6D4", -Math.PI / 4, Math.PI / 4);
-    const ring3 = createRing(104, "#38BDF8", Math.PI / 2, 0);
+    const ring1 = createRing(76, "#C084FC", Math.PI / 3, Math.PI / 6);
+    const ring2 = createRing(88, "#22D3EE", -Math.PI / 4, Math.PI / 4);
+    const ring3 = createRing(100, "#38BDF8", Math.PI / 2, 0);
 
-    // 4. Lights
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+    // 4. Volumetric Cinematic Lighting
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.9);
     scene.add(ambientLight);
 
-    const pointLight1 = new THREE.PointLight("#8B5CF6", 4, 300);
-    pointLight1.position.set(80, 80, 80);
+    const pointLight1 = new THREE.PointLight("#8B5CF6", 5, 350);
+    pointLight1.position.set(90, 90, 90);
     scene.add(pointLight1);
 
-    const pointLight2 = new THREE.PointLight("#38BDF8", 4, 300);
-    pointLight2.position.set(-80, -80, 80);
+    const pointLight2 = new THREE.PointLight("#38BDF8", 5, 350);
+    pointLight2.position.set(-90, -90, 90);
     scene.add(pointLight2);
 
-    // 5. Animation
+    const pointLight3 = new THREE.PointLight("#D946EF", 3, 250);
+    pointLight3.position.set(0, 100, -50);
+    scene.add(pointLight3);
+
+    // 5. Animation Loop
     let reqId: number;
     const clock = new THREE.Clock();
 
@@ -93,20 +104,20 @@ export function HolographicOrb() {
       const elapsedTime = clock.getElapsedTime();
 
       // Breathing scale oscillation
-      const scale = 1 + Math.sin(elapsedTime * 1.5) * 0.04;
+      const scale = 1 + Math.sin(elapsedTime * 1.5) * 0.045;
       coreMesh.scale.set(scale, scale, scale);
 
-      // Rotations
-      coreMesh.rotation.y = elapsedTime * 0.3;
-      coreMesh.rotation.x = elapsedTime * 0.15;
+      // Smooth Rotations
+      coreMesh.rotation.y = elapsedTime * 0.32;
+      coreMesh.rotation.x = elapsedTime * 0.16;
 
-      shellMesh.rotation.y = -elapsedTime * 0.2;
-      shellMesh.rotation.z = elapsedTime * 0.25;
+      shellMesh.rotation.y = -elapsedTime * 0.22;
+      shellMesh.rotation.z = elapsedTime * 0.26;
 
-      ring1.rotation.z = elapsedTime * 0.4;
-      ring2.rotation.z = -elapsedTime * 0.35;
-      ring3.rotation.x = Math.PI / 2 + Math.sin(elapsedTime * 0.8) * 0.15;
-      ring3.rotation.z = elapsedTime * 0.2;
+      ring1.rotation.z = elapsedTime * 0.42;
+      ring2.rotation.z = -elapsedTime * 0.36;
+      ring3.rotation.x = Math.PI / 2 + Math.sin(elapsedTime * 0.85) * 0.18;
+      ring3.rotation.z = elapsedTime * 0.22;
 
       renderer.render(scene, camera);
     };
@@ -134,7 +145,7 @@ export function HolographicOrb() {
       className="relative flex items-center justify-center pointer-events-none select-none"
     >
       {/* Outer energy radial backdrop glow */}
-      <div className="absolute w-[360px] h-[360px] rounded-full bg-gradient-to-tr from-purple-600/30 via-indigo-500/20 to-cyan-400/30 blur-3xl animate-pulse -z-10" />
+      <div className="absolute w-[360px] h-[360px] rounded-full bg-gradient-to-tr from-purple-600/35 via-indigo-500/25 to-cyan-400/35 blur-3xl animate-pulse -z-10" />
 
       {/* Floating 3D Canvas Container */}
       <motion.div

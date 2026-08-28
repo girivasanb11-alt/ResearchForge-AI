@@ -19,7 +19,6 @@ export default function DashboardResearchPage() {
     activeAgentStatus,
     setIsApprovalModalOpen,
     startResearch,
-    cancelResearch,
   } = useResearch();
 
   const handleStart = (topic: string, depth?: ResearchDepth, scope?: ResearchScope[]) => {
