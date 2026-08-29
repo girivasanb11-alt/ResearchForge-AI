@@ -1,102 +1,102 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
-import { Sparkles, ArrowRight, ShieldCheck, Globe, Cpu } from "lucide-react";
+import { motion, useAnimation, useInView } from "framer-motion";
+import { ArrowRight, Sparkles, Cpu, Globe, ShieldCheck } from "lucide-react";
+import gsap from "gsap";
 import { Logo } from "@/components/brand/Logo";
 import { SceneEnvironment } from "@/components/canvas/SceneEnvironment";
 import { Button } from "@/components/ui/button";
 
 export default function LandingPage() {
+  const heroRef = useRef<HTMLDivElement>(null);
+  
+  useEffect(() => {
+    // Cinematic GSAP Entrance
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        ".gsap-reveal",
+        { opacity: 0, y: 40, filter: "blur(10px)" },
+        { opacity: 1, y: 0, filter: "blur(0px)", duration: 1.2, stagger: 0.15, ease: "power3.out", delay: 0.2 }
+      );
+    }, heroRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <div className="relative min-h-screen bg-[#020617] text-white selection:bg-purple-500 overflow-hidden">
-      {/* Unified 3D Environment Background */}
+    <div className="relative min-h-screen bg-[#020617] text-white selection:bg-[#8A5BFF]/30 overflow-hidden font-sans">
+      
+      {/* 3D Cosmic Environment (R3F Pipeline) */}
       <SceneEnvironment />
 
       {/* Floating UI Layer */}
       <div className="relative z-10 flex flex-col min-h-screen">
-        {/* ONLY ONE CLEAN NAVIGATION HEADER */}
-        <header className="w-full flex-none">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-24 flex items-center justify-between">
+        
+        {/* ONE CLEAN NAVIGATION BAR */}
+        <header className="w-full flex-none sticky top-0 z-50">
+          <div className="absolute inset-0 bg-[#020617]/40 backdrop-blur-xl border-b border-white/5" />
+          <div className="relative max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
             <Link href="/" className="hover:opacity-90 transition-opacity">
               <Logo textClassName="text-xl font-extrabold text-white tracking-tight" />
             </Link>
 
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-3 sm:gap-6">
               <Link href="/auth/signin">
-                <Button variant="ghost" size="sm" className="text-sm font-semibold font-sans text-slate-300 hover:text-white hover:bg-white/5 h-10 px-4 rounded-xl transition-colors">
+                <Button variant="ghost" className="hidden sm:flex text-sm font-semibold text-slate-300 hover:text-white hover:bg-white/5 h-11 px-5 rounded-xl transition-colors">
                   Sign In
                 </Button>
               </Link>
               <Link href="/auth/signup">
                 <Button
-                  size="sm"
-                  className="relative group overflow-hidden text-sm font-bold font-sans h-10 px-6 rounded-xl border border-white/10 bg-black/20 backdrop-blur-md shadow-2xl hover:border-purple-500/50 transition-all"
+                  className="relative group overflow-hidden text-sm font-bold h-11 px-6 rounded-xl border border-white/10 bg-white/5 backdrop-blur-md shadow-2xl hover:border-[#8A5BFF]/50 hover:bg-white/10 transition-all"
                 >
-                  <span className="absolute inset-0 bg-gradient-to-r from-purple-600/40 via-indigo-600/40 to-blue-600/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  <span className="relative z-10 flex items-center gap-2 text-white">
-                    Start Research
-                  </span>
+                  <span className="absolute inset-0 bg-gradient-to-r from-[#5A3BFF]/40 via-[#00BFFF]/40 to-[#00D8FF]/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  <span className="relative z-10 text-white">Start Research</span>
                 </Button>
               </Link>
             </div>
           </div>
         </header>
 
-        {/* Hero Section Split Layout */}
-        <main className="flex-1 flex flex-col max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pt-16 lg:pt-32 pb-20">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        {/* Cinematic Split Hero */}
+        <main ref={heroRef} className="flex-1 flex flex-col justify-center max-w-7xl mx-auto px-6 w-full pt-12 lg:pt-0 pb-32">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center min-h-[75vh]">
             
-            {/* LEFT SIDE: Content */}
-            <div className="lg:col-span-6 space-y-8 text-left z-20">
-              <motion.div
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full border border-purple-500/20 bg-purple-500/10 backdrop-blur-md text-purple-200 text-xs font-mono font-semibold uppercase tracking-wider"
-              >
-                <Sparkles className="h-4 w-4 text-purple-400 animate-pulse" />
-                <span>Next-Gen Research Platform</span>
-              </motion.div>
+            {/* LEFT SIDE: Typography & CTAs */}
+            <div className="lg:col-span-7 space-y-8 text-left z-20">
+              
+              {/* Badge */}
+              <div className="gsap-reveal inline-flex items-center gap-2.5 px-4 py-2 rounded-full border border-[#8A5BFF]/30 bg-[#8A5BFF]/10 backdrop-blur-md text-[#C26CFF] text-xs font-mono font-bold uppercase tracking-widest shadow-[0_0_20px_rgba(138,91,255,0.2)]">
+                <Sparkles className="h-3.5 w-3.5 animate-pulse" />
+                <span>Living Intelligence Network</span>
+              </div>
 
-              <motion.h1
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-                className="text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tighter leading-[1.05] text-white font-sans"
-              >
-                Enterprise Grade
+              {/* Massive Hero Typography */}
+              <h1 className="gsap-reveal text-5xl sm:text-7xl lg:text-[5.5rem] font-extrabold tracking-tighter leading-[1.05] text-white">
+                Autonomous
                 <br />
-                <span className="bg-gradient-to-r from-white via-purple-300 to-[#38BDF8] bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-[#8A5BFF] via-[#00BFFF] to-[#00D8FF] bg-clip-text text-transparent">
                   AI Synthesis.
                 </span>
-              </motion.h1>
+              </h1>
 
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-                className="text-base sm:text-lg text-slate-300/90 font-sans leading-relaxed max-w-lg"
-              >
-                Deploy autonomous multi-agent swarms to synthesize peer-reviewed papers, patents, and market data into verified dossiers in seconds.
-              </motion.p>
+              <p className="gsap-reveal text-lg sm:text-xl text-slate-300/80 font-medium leading-relaxed max-w-xl">
+                Deploy multi-agent swarms to synthesize peer-reviewed papers, patents, and market data inside a living cosmic digital universe.
+              </p>
 
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                className="flex flex-wrap items-center gap-4 pt-4"
-              >
+              {/* CTAs */}
+              <div className="gsap-reveal flex flex-wrap items-center gap-4 pt-4">
                 <Link href="/auth/signup">
                   <Button
                     size="lg"
-                    className="relative group h-14 px-8 rounded-2xl font-bold font-sans text-sm border border-purple-500/30 bg-purple-600/20 hover:bg-purple-600/40 hover:border-purple-400/50 backdrop-blur-md text-white shadow-[0_0_40px_-10px_rgba(147,51,234,0.4)] transition-all overflow-hidden flex items-center gap-2"
+                    className="relative group h-14 px-8 rounded-2xl font-bold text-base border border-[#8A5BFF]/40 bg-[#5A3BFF]/20 hover:bg-[#5A3BFF]/40 hover:border-[#8A5BFF]/70 backdrop-blur-xl text-white shadow-[0_0_50px_-12px_rgba(90,59,255,0.6)] transition-all overflow-hidden"
                   >
-                    <span className="absolute inset-0 bg-gradient-to-r from-purple-600 to-blue-600 opacity-20 group-hover:opacity-40 transition-opacity" />
+                    <span className="absolute inset-0 bg-gradient-to-r from-[#5A3BFF] to-[#00BFFF] opacity-0 group-hover:opacity-40 transition-opacity duration-500" />
                     <span className="relative z-10 flex items-center gap-2">
                       Initialize Agents
-                      <ArrowRight className="h-4 w-4" />
+                      <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                     </span>
                   </Button>
                 </Link>
@@ -105,37 +105,32 @@ export default function LandingPage() {
                   <Button
                     variant="outline"
                     size="lg"
-                    className="h-14 px-7 rounded-2xl font-semibold font-sans text-sm border-white/10 bg-white/5 hover:bg-white/10 backdrop-blur-md text-white flex items-center gap-2 transition-colors"
+                    className="h-14 px-8 rounded-2xl font-semibold text-base border-white/10 bg-white/5 hover:bg-white/15 backdrop-blur-xl text-white transition-all shadow-xl"
                   >
-                    View Architecture
+                    Explore Universe
                   </Button>
                 </Link>
-              </motion.div>
+              </div>
 
-              {/* Fast Stats Bar */}
-              <motion.div 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 1, delay: 0.6 }}
-                className="pt-8 flex items-center gap-6 text-xs font-mono text-slate-400/80"
-              >
+              {/* Stats / Trust Badges */}
+              <div className="gsap-reveal pt-12 flex items-center gap-8 text-xs font-mono font-medium text-slate-400/80">
                 <div className="flex items-center gap-2">
-                  <ShieldCheck className="h-4 w-4 text-emerald-400/80" />
-                  <span>Zero Hallucination</span>
+                  <Cpu className="h-4 w-4 text-[#8A5BFF]" />
+                  <span>Quantum Compute</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Globe className="h-4 w-4 text-cyan-400/80" />
-                  <span>Real-time Citing</span>
+                  <Globe className="h-4 w-4 text-[#00BFFF]" />
+                  <span>Global Swarm</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Cpu className="h-4 w-4 text-purple-400/80" />
-                  <span>WASM Sandbox</span>
+                  <ShieldCheck className="h-4 w-4 text-[#00D8FF]" />
+                  <span>Verified Output</span>
                 </div>
-              </motion.div>
+              </div>
             </div>
             
-            {/* RIGHT SIDE: Visual anchor logic (space preserved for the background Canvas elements) */}
-            <div className="lg:col-span-6 hidden lg:block pointer-events-none min-h-[500px]" />
+            {/* RIGHT SIDE: Reserved for 3D HeroSphere bounding box */}
+            <div className="lg:col-span-5 hidden lg:block h-full w-full pointer-events-none" />
 
           </div>
         </main>

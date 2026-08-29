@@ -1,0 +1,63 @@
+"use client";
+
+import React, { useRef, useMemo } from "react";
+import { useFrame } from "@react-three/fiber";
+import * as THREE from "three";
+
+interface CosmicDustProps {
+  count?: number;
+}
+
+export function CosmicDust({ count = 10000 }: CosmicDustProps) {
+  const pointsRef = useRef<THREE.Points>(null);
+
+  // Memoize the geometry attributes so we aren't recomputing 10k vertices on every render
+  const [positions, colors] = useMemo(() => {
+    const pos = new Float32Array(count * 3);
+    const col = new Float32Array(count * 3);
+
+    const colorA = new THREE.Color("#00D8FF"); // Cyan
+    const colorB = new THREE.Color("#FF5FD7"); // Pink/Purple
+
+    for (let i = 0; i < count; i++) {
+      // Spread them in a large volume
+      pos[i * 3] = (Math.random() - 0.5) * 40;
+      pos[i * 3 + 1] = (Math.random() - 0.5) * 40;
+      pos[i * 3 + 2] = (Math.random() - 0.5) * 40;
+
+      // Mix colors
+      const mixedColor = colorA.clone().lerp(colorB, Math.random());
+      col[i * 3] = mixedColor.r;
+      col[i * 3 + 1] = mixedColor.g;
+      col[i * 3 + 2] = mixedColor.b;
+    }
+
+    return [pos, col];
+  }, [count]);
+
+  useFrame((state, delta) => {
+    if (!pointsRef.current) return;
+    
+    // Very slow cosmic drift rotation
+    pointsRef.current.rotation.y += delta * 0.02;
+    pointsRef.current.rotation.x += delta * 0.01;
+  });
+
+  return (
+    <points ref={pointsRef}>
+      <bufferGeometry>
+        <bufferAttribute attach="attributes-position" args={[positions, 3]} />
+        <bufferAttribute attach="attributes-color" args={[colors, 3]} />
+      </bufferGeometry>
+      <pointsMaterial
+        size={0.05}
+        vertexColors
+        transparent
+        opacity={0.6}
+        sizeAttenuation={true}
+        blending={THREE.AdditiveBlending}
+        depthWrite={false}
+      />
+    </points>
+  );
+}
