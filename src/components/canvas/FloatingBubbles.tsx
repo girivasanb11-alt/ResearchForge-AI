@@ -38,16 +38,26 @@ export function FloatingBubbles({ count = 12 }: FloatingBubblesProps) {
           <Sphere args={[data.scale, 32, 32]}>
             <MeshTransmissionMaterial
               backside
-              backsideThickness={data.scale * 2}
-              thickness={data.scale}
-              chromaticAberration={0.05}
-              transmission={1}
-              roughness={0.05}
-              ior={1.4}
+              backsideThickness={data.scale * 3}
+              thickness={data.scale * 1.5}
+              chromaticAberration={0.15}
+              transmission={1.2}
+              roughness={0.02}
+              ior={1.5}
               clearcoat={1}
               color={data.color}
               transparent
-              opacity={0.8}
+              opacity={0.9}
+            />
+          </Sphere>
+          
+          {/* Inner contained energy core */}
+          <Sphere args={[data.scale * 0.4, 16, 16]}>
+            <meshBasicMaterial 
+               color={data.color === "#8A5BFF" ? "#C26CFF" : "#00FFFF"} 
+               wireframe 
+               transparent 
+               opacity={0.3} 
             />
           </Sphere>
         </Float>

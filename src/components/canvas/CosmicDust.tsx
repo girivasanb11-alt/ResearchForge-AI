@@ -48,15 +48,38 @@ export function CosmicDust({ count = 10000 }: CosmicDustProps) {
       <bufferGeometry>
         <bufferAttribute attach="attributes-position" args={[positions, 3]} />
         <bufferAttribute attach="attributes-color" args={[colors, 3]} />
+        {/* Pass randomized sizes to the shader */}
+        <bufferAttribute attach="attributes-size" args={[new Float32Array(Array.from({length: count}, () => Math.random() * 2.0 + 0.5)), 1]} />
       </bufferGeometry>
-      <pointsMaterial
-        size={0.05}
-        vertexColors
+      <shaderMaterial
         transparent
-        opacity={0.6}
-        sizeAttenuation={true}
-        blending={THREE.AdditiveBlending}
         depthWrite={false}
+        blending={THREE.AdditiveBlending}
+        vertexColors
+        vertexShader={`
+          attribute float size;
+          varying vec3 vColor;
+          void main() {
+            vColor = color;
+            vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+            // Attenuate size based on distance
+            gl_PointSize = size * (30.0 / -mvPosition.z);
+            gl_Position = projectionMatrix * mvPosition;
+          }
+        `}
+        fragmentShader={`
+          varying vec3 vColor;
+          void main() {
+            // Soft circular glow for particles
+            vec2 xy = gl_PointCoord.xy - vec2(0.5);
+            float ll = length(xy);
+            if(ll > 0.5) discard;
+            // Radial gradient glow
+            float alpha = (0.5 - ll) * 2.0;
+            // Enhance the color glow
+            gl_FragColor = vec4(vColor * 1.5, alpha * 0.8);
+          }
+        `}
       />
     </points>
   );

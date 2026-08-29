@@ -8,6 +8,12 @@ import { Logo } from "@/components/brand/Logo";
 import { SceneEnvironment } from "@/components/canvas/SceneEnvironment";
 import { Button } from "@/components/ui/button";
 
+import { DashboardVisualizerSection } from "@/components/home/DashboardVisualizerSection";
+import { FeatureGridSection } from "@/components/home/FeatureGridSection";
+import { WorkflowTimelineSection } from "@/components/home/WorkflowTimelineSection";
+import { WhyResearchForgeSection } from "@/components/home/WhyResearchForgeSection";
+import { FinalCTASection } from "@/components/home/FinalCTASection";
+
 export default function LandingPage() {
   const heroRef = useRef<HTMLDivElement>(null);
   
@@ -25,17 +31,21 @@ export default function LandingPage() {
   }, []);
 
   return (
-    <div className="relative min-h-screen bg-[#020617] text-white selection:bg-[#8A5BFF]/30 overflow-hidden font-sans">
+    <div className="relative min-h-screen bg-[#020617] text-white selection:bg-[#8A5BFF]/30 overflow-x-hidden font-sans">
       
-      {/* 3D Cosmic Environment (R3F Pipeline) */}
-      <SceneEnvironment />
+      {/* 3D Cosmic Environment (R3F Pipeline) - Hero Background */}
+      <div className="absolute top-0 left-0 w-full h-[120vh] z-0 overflow-hidden pointer-events-none">
+        <SceneEnvironment />
+        {/* Deep fade to black for smooth scrolling transition into normal DOM */}
+        <div className="absolute bottom-0 left-0 w-full h-64 bg-gradient-to-t from-[#020617] to-transparent" />
+      </div>
 
       {/* Floating UI Layer */}
       <div className="relative z-10 flex flex-col min-h-screen">
         
         {/* ONE CLEAN NAVIGATION BAR */}
         <header className="w-full flex-none sticky top-0 z-50">
-          <div className="absolute inset-0 bg-[#020617]/40 backdrop-blur-xl border-b border-white/5" />
+          <div className="absolute inset-0 bg-[#020617]/60 backdrop-blur-xl border-b border-white/5" />
           <div className="relative max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
             <Link href="/" className="hover:opacity-90 transition-opacity">
               <Logo textClassName="text-xl font-extrabold text-white tracking-tight" />
@@ -60,8 +70,8 @@ export default function LandingPage() {
         </header>
 
         {/* Cinematic Split Hero */}
-        <main ref={heroRef} className="flex-1 flex flex-col justify-center max-w-7xl mx-auto px-6 w-full pt-12 lg:pt-0 pb-32">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center min-h-[75vh]">
+        <main ref={heroRef} className="flex-none flex flex-col justify-center max-w-7xl mx-auto px-6 w-full pt-12 lg:pt-0 min-h-[90vh]">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center h-full">
             
             {/* LEFT SIDE: Typography & CTAs */}
             <div className="lg:col-span-7 space-y-8 text-left z-20">
@@ -133,6 +143,15 @@ export default function LandingPage() {
 
           </div>
         </main>
+        
+        {/* NEW SCROLLING SECTIONS */}
+        <div className="relative z-20">
+          <DashboardVisualizerSection />
+          <FeatureGridSection />
+          <WhyResearchForgeSection />
+          <WorkflowTimelineSection />
+          <FinalCTASection />
+        </div>
       </div>
     </div>
   );
