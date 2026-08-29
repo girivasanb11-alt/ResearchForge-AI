@@ -29,16 +29,16 @@ export function useAuth() {
   const loginWithOAuth = async (provider: "google" | "github") => {
     try {
       await signIn(provider, { callbackUrl: "/dashboard" });
-    } catch (_error) {
+    } catch {
       toast.error(`Failed to sign in with ${provider}`);
     }
   };
 
-  const loginWithEmail = async (_email: string) => {
+  const loginWithEmail = async () => {
     toast.info("Email login is disabled. Please use Google OAuth.");
   };
 
-  const signup = async (_firstName: string, _lastName: string, _email: string) => {
+  const signup = async () => {
     toast.info("Signups are restricted to Google OAuth currently.");
   };
 
