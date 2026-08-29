@@ -20,7 +20,7 @@ export function exportReportToMarkdown(report: ResearchReport): string {
 
   if (report.recommendations && report.recommendations.length > 0) {
     md += `## 5. Recommendations\n\n`;
-    report.recommendations.forEach((rec, idx) => {
+    report.recommendations.forEach((rec) => {
       md += `- ${rec}\n`;
     });
     md += `\n`;
