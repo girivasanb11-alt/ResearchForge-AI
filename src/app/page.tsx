@@ -2,7 +2,6 @@
 
 import React, { useEffect, useRef } from "react";
 import Link from "next/link";
-import { motion, useAnimation, useInView } from "framer-motion";
 import { ArrowRight, Sparkles, Cpu, Globe, ShieldCheck } from "lucide-react";
 import gsap from "gsap";
 import { Logo } from "@/components/brand/Logo";

@@ -2,7 +2,7 @@
 
 import React, { useRef } from "react";
 import { useFrame } from "@react-three/fiber";
-import { Sphere, MeshTransmissionMaterial, Wireframe, MeshWobbleMaterial } from "@react-three/drei";
+import { Sphere, MeshTransmissionMaterial, MeshWobbleMaterial } from "@react-three/drei";
 import * as THREE from "three";
 
 export function HeroSphere() {

@@ -1,9 +1,7 @@
 "use client";
 
-import React, { useRef, useMemo } from "react";
-import { useFrame } from "@react-three/fiber";
+import React, { useMemo } from "react";
 import { Float, Sphere, MeshTransmissionMaterial } from "@react-three/drei";
-import * as THREE from "three";
 
 interface FloatingBubblesProps {
   count?: number;

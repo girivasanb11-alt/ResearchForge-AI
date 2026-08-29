@@ -67,7 +67,7 @@ export function SceneEnvironment() {
           <ParticleTerrain />
 
           {/* Premium Post-Processing Pipeline */}
-          <EffectComposer disableNormalPass>
+          <EffectComposer>
             <DepthOfField 
               target={[0, 0, 0]}
               focalLength={0.02} 
