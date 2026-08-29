@@ -56,7 +56,6 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
           <ResearchProvider>
             <div className="relative flex min-h-screen flex-col bg-mesh bg-dot-grid">
-              <Navbar />
               <main className="flex-1 w-full">{children}</main>
               <Footer />
               <CommandMenu />

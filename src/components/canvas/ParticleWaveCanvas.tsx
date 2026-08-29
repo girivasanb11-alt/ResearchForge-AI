@@ -163,12 +163,12 @@ export function ParticleWaveCanvas() {
     // 4. LAYER 4: HERO HOLOGRAPHIC ORB (UPPER-RIGHT QUADRANT POSITION)
     // =========================================================================
     const heroOrbGroup = new THREE.Group();
-    // Offset to the right to frame header text on left
-    heroOrbGroup.position.set(85, 55, 20);
+    // Centered orb directly in the top middle
+    heroOrbGroup.position.set(0, 95, 10);
     scene.add(heroOrbGroup);
 
     // Inner Radiant Pulsing Core
-    const heroCoreGeo = new THREE.IcosahedronGeometry(25, 4);
+    const heroCoreGeo = new THREE.SphereGeometry(30, 64, 64);
     const heroCoreMat = new THREE.MeshStandardMaterial({
       color: new THREE.Color("#7C3AED"),
       emissive: new THREE.Color("#8B5CF6"),
@@ -180,7 +180,7 @@ export function ParticleWaveCanvas() {
     heroOrbGroup.add(heroCoreMesh);
 
     // Outer Glass Refraction Shell
-    const heroShellGeo = new THREE.IcosahedronGeometry(33, 3);
+    const heroShellGeo = new THREE.SphereGeometry(33, 64, 64);
     const heroShellMat = new THREE.MeshPhysicalMaterial({
       color: new THREE.Color("#38BDF8"),
       emissive: new THREE.Color("#0284C7"),
@@ -194,30 +194,10 @@ export function ParticleWaveCanvas() {
       reflectivity: 0.9,
       clearcoat: 1.0,
       clearcoatRoughness: 0.08,
-      wireframe: true,
+      wireframe: false,
     });
     const heroShellMesh = new THREE.Mesh(heroShellGeo, heroShellMat);
     heroOrbGroup.add(heroShellMesh);
-
-    // Gyroscopic Holographic Rings
-    const createOrbRing = (radius: number, color: string, rotX: number, rotY: number) => {
-      const rGeo = new THREE.TorusGeometry(radius, 0.7, 16, 120);
-      const rMat = new THREE.MeshBasicMaterial({
-        color: new THREE.Color(color),
-        transparent: true,
-        opacity: 0.7,
-        blending: THREE.AdditiveBlending,
-      });
-      const rMesh = new THREE.Mesh(rGeo, rMat);
-      rMesh.rotation.x = rotX;
-      rMesh.rotation.y = rotY;
-      heroOrbGroup.add(rMesh);
-      return rMesh;
-    };
-
-    const ringA = createOrbRing(42, "#C084FC", Math.PI / 3, Math.PI / 6);
-    const ringB = createOrbRing(49, "#22D3EE", -Math.PI / 4, Math.PI / 4);
-    const ringC = createOrbRing(56, "#38BDF8", Math.PI / 2, 0);
 
     // =========================================================================
     // 5. LAYER 4: DYNAMIC FLOATING SPHERES (MATCHING IMAGE PLACEMENT)
@@ -261,12 +241,16 @@ export function ParticleWaveCanvas() {
       });
     };
 
-    // Medium pink-purple orb floating on middle-left
-    createFloatingSphere(9, "#D946EF", -160, 40, -40, 0.45);
-    // Cyan-blue orb floating on upper-right
-    createFloatingSphere(7, "#38BDF8", 180, 65, -30, 0.38);
-    // Small purple orb floating near bottom-center
-    createFloatingSphere(4.5, "#8B5CF6", -20, -10, 60, 0.52);
+    // Medium purple orb floating on middle-left
+    createFloatingSphere(9, "#D946EF", -140, 70, -20, 0.45);
+    // Small blue orb floating far top-left
+    createFloatingSphere(5, "#8B5CF6", -180, 140, -60, 0.38);
+    // Medium cyan orb floating on upper-right
+    createFloatingSphere(8, "#38BDF8", 150, 90, -40, 0.32);
+    // Small purple orb floating near center-left
+    createFloatingSphere(4, "#8B5CF6", -60, 60, 30, 0.52);
+    // Tiny blue orb floating near center-right
+    createFloatingSphere(3.5, "#22D3EE", 80, 100, -10, 0.48);
 
     // =========================================================================
     // 6. AMBIENT MICRO-PARTICLES (LAYER 5)
@@ -379,12 +363,7 @@ export function ParticleWaveCanvas() {
       heroShellMesh.rotation.y = -elapsedTime * 0.22;
       heroShellMesh.rotation.z = elapsedTime * 0.26;
 
-      ringA.rotation.z = elapsedTime * 0.42;
-      ringB.rotation.z = -elapsedTime * 0.36;
-      ringC.rotation.x = Math.PI / 2 + Math.sin(elapsedTime * 0.85) * 0.18;
-      ringC.rotation.z = elapsedTime * 0.22;
-
-      heroOrbGroup.position.y = 55 + Math.sin(elapsedTime * 0.75) * 6;
+      heroOrbGroup.position.y = 95 + Math.sin(elapsedTime * 0.75) * 6;
 
       // Floating auxiliary spheres
       floatingSpheres.forEach((sphere) => {
