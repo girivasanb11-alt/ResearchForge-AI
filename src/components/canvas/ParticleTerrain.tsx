@@ -59,9 +59,6 @@ export function ParticleTerrain() {
     let i = 0;
     for (let ix = 0; ix < AMOUNT_X; ix++) {
       for (let iy = 0; iy < AMOUNT_Y; iy++) {
-        const x = positions[i * 3];
-        const z = positions[i * 3 + 2];
-        
         // Complex wave function for procedural terrain
         const y = Math.sin((ix + time * 2) * 0.1) * 1.5 
                 + Math.cos((iy + time) * 0.1) * 1.5
@@ -79,15 +76,11 @@ export function ParticleTerrain() {
       <bufferGeometry>
         <bufferAttribute
           attach="attributes-position"
-          count={positions.length / 3}
-          array={positions}
-          itemSize={3}
+          args={[positions, 3]}
         />
         <bufferAttribute
           attach="attributes-color"
-          count={colors.length / 3}
-          array={colors}
-          itemSize={3}
+          args={[colors, 3]}
         />
       </bufferGeometry>
       <pointsMaterial
