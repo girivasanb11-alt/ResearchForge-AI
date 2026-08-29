@@ -3,7 +3,7 @@ import { Inter, JetBrains_Mono, Geist } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import { ResearchProvider } from "@/lib/store";
-import { Navbar } from "@/components/layout/Navbar";
+
 import { Footer } from "@/components/layout/Footer";
 import { CommandMenu } from "@/components/layout/CommandMenu";
 import { Toaster } from "sonner";
@@ -55,7 +55,7 @@ export default function RootLayout({
       <body className={`${inter.variable} ${jetbrainsMono.variable} font-sans min-h-screen flex flex-col bg-background text-foreground`}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
           <ResearchProvider>
-            <div className="relative flex min-h-screen flex-col bg-mesh bg-dot-grid">
+            <div className="relative flex min-h-screen flex-col bg-cosmic-void">
               <main className="flex-1 w-full">{children}</main>
               <Footer />
               <CommandMenu />

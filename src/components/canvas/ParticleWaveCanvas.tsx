@@ -96,19 +96,15 @@ export function ParticleWaveCanvas() {
         initialBaseZ[sIdx] = zPos;
         waveScales[sIdx] = Math.random() * 2.2 + 3.2;
 
-        // Diagonal gradient: Left side purple/magenta, right side cyan/neon blue
+        // X-axis interpolation: Magenta -> Deep Purple -> Neon Blue
         const u = ix / AMOUNT_X;
-        const v = iy / AMOUNT_Y;
-        const gradientRatio = u * 0.6 + v * 0.4;
-
-        if (gradientRatio < 0.25) {
-          tempColor.copy(colorMagenta).lerp(colorViolet, gradientRatio / 0.25);
-        } else if (gradientRatio < 0.55) {
-          tempColor.copy(colorViolet).lerp(colorDeepPurple, (gradientRatio - 0.25) / 0.3);
-        } else if (gradientRatio < 0.8) {
-          tempColor.copy(colorDeepPurple).lerp(colorNeonBlue, (gradientRatio - 0.55) / 0.25);
+        
+        if (u < 0.5) {
+          // Left to center: Magenta to Deep Purple
+          tempColor.copy(colorMagenta).lerp(colorDeepPurple, u * 2.0);
         } else {
-          tempColor.copy(colorNeonBlue).lerp(colorCyan, (gradientRatio - 0.8) / 0.2);
+          // Center to right: Deep Purple to Neon Blue
+          tempColor.copy(colorDeepPurple).lerp(colorNeonBlue, (u - 0.5) * 2.0);
         }
 
         waveColors[pIdx] = tempColor.r;
@@ -241,16 +237,12 @@ export function ParticleWaveCanvas() {
       });
     };
 
-    // Medium purple orb floating on middle-left
+    // Medium magenta orb floating ominously in mid-left
     createFloatingSphere(9, "#D946EF", -140, 70, -20, 0.45);
-    // Small blue orb floating far top-left
+    // Small violet orb floating far top-left
     createFloatingSphere(5, "#8B5CF6", -180, 140, -60, 0.38);
     // Medium cyan orb floating on upper-right
     createFloatingSphere(8, "#38BDF8", 150, 90, -40, 0.32);
-    // Small purple orb floating near center-left
-    createFloatingSphere(4, "#8B5CF6", -60, 60, 30, 0.52);
-    // Tiny blue orb floating near center-right
-    createFloatingSphere(3.5, "#22D3EE", 80, 100, -10, 0.48);
 
     // =========================================================================
     // 6. AMBIENT MICRO-PARTICLES (LAYER 5)
