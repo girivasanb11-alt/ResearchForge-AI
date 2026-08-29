@@ -1,108 +1,56 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useSession, signIn, signOut } from "next-auth/react";
 import { UserProfile, AuthSession } from "@/types/auth";
 import { toast } from "sonner";
 
-const DEFAULT_USER: UserProfile = {
-  id: "user-default-1",
-  firstName: "Senior",
-  lastName: "Researcher",
-  email: "researcher@trueforge.ai",
-  role: "enterprise_analyst",
-  provider: "github",
-  createdAt: new Date().toISOString(),
-};
-
 export function useAuth() {
-  const [session, setSession] = useState<AuthSession>({
-    user: DEFAULT_USER,
-    isAuthenticated: true,
-  });
-  const [isLoading, setIsLoading] = useState(false);
+  const { data: session, status } = useSession();
+  
+  const isLoading = status === "loading";
+  const isAuthenticated = status === "authenticated";
 
-  useEffect(() => {
-    try {
-      const stored = localStorage.getItem("researchforge_auth_session");
-      if (stored) {
-        setSession(JSON.parse(stored));
-      }
-    } catch {
-      // Fallback
-    }
-  }, []);
+  // Map NextAuth user to our application's UserProfile
+  const user: UserProfile | null = session?.user ? {
+    id: (session.user as { id?: string }).id || "unknown",
+    firstName: session.user.name?.split(" ")[0] || "Researcher",
+    lastName: session.user.name?.split(" ").slice(1).join(" ") || "",
+    email: session.user.email || "",
+    role: (session.user as { role?: string }).role || "enterprise_analyst",
+    provider: "google",
+    createdAt: new Date().toISOString(),
+  } : null;
+
+  const authSession: AuthSession = {
+    user,
+    isAuthenticated,
+  };
 
   const loginWithOAuth = async (provider: "google" | "github") => {
-    setIsLoading(true);
-    setTimeout(() => {
-      const user: UserProfile = {
-        id: `user-${provider}-${Date.now()}`,
-        firstName: provider === "github" ? "GitHub" : "Google",
-        lastName: "Scientist",
-        email: `analyst@${provider}.auth`,
-        role: "enterprise_analyst",
-        provider,
-        createdAt: new Date().toISOString(),
-      };
-      const newSession = { user, isAuthenticated: true };
-      setSession(newSession);
-      localStorage.setItem("researchforge_auth_session", JSON.stringify(newSession));
-      setIsLoading(false);
-      toast.success(`Signed in successfully with ${provider.toUpperCase()}`);
-    }, 800);
+    try {
+      await signIn(provider, { callbackUrl: "/dashboard" });
+    } catch (_error) {
+      toast.error(`Failed to sign in with ${provider}`);
+    }
   };
 
-  const loginWithEmail = async (email: string) => {
-    setIsLoading(true);
-    setTimeout(() => {
-      const user: UserProfile = {
-        id: `user-email-${Date.now()}`,
-        firstName: email.split("@")[0],
-        lastName: "Researcher",
-        email,
-        role: "enterprise_analyst",
-        provider: "email",
-        createdAt: new Date().toISOString(),
-      };
-      const newSession = { user, isAuthenticated: true };
-      setSession(newSession);
-      localStorage.setItem("researchforge_auth_session", JSON.stringify(newSession));
-      setIsLoading(false);
-      toast.success("Welcome back to ResearchForge AI");
-    }, 800);
+  const loginWithEmail = async (_email: string) => {
+    toast.info("Email login is disabled. Please use Google OAuth.");
   };
 
-  const signup = async (firstName: string, lastName: string, email: string) => {
-    setIsLoading(true);
-    setTimeout(() => {
-      const user: UserProfile = {
-        id: `user-${Date.now()}`,
-        firstName,
-        lastName,
-        email,
-        role: "enterprise_analyst",
-        provider: "email",
-        createdAt: new Date().toISOString(),
-      };
-      const newSession = { user, isAuthenticated: true };
-      setSession(newSession);
-      localStorage.setItem("researchforge_auth_session", JSON.stringify(newSession));
-      setIsLoading(false);
-      toast.success("Enterprise research account created!");
-    }, 800);
+  const signup = async (_firstName: string, _lastName: string, _email: string) => {
+    toast.info("Signups are restricted to Google OAuth currently.");
   };
 
-  const logout = () => {
-    const emptySession = { user: null, isAuthenticated: false };
-    setSession(emptySession);
-    localStorage.removeItem("researchforge_auth_session");
+  const logout = async () => {
+    await signOut({ callbackUrl: "/" });
     toast.info("Signed out of research desk");
   };
 
   return {
-    session,
-    user: session.user,
-    isAuthenticated: session.isAuthenticated,
+    session: authSession,
+    user,
+    isAuthenticated,
     isLoading,
     loginWithOAuth,
     loginWithEmail,

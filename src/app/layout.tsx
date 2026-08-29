@@ -3,6 +3,7 @@ import { Inter, JetBrains_Mono, Geist } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import { ResearchProvider } from "@/lib/store";
+import { AuthProvider } from "@/components/providers/AuthProvider";
 
 import { Footer } from "@/components/layout/Footer";
 import { CommandMenu } from "@/components/layout/CommandMenu";
@@ -54,14 +55,16 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning className={cn("dark", "font-sans", geist.variable)}>
       <body className={`${inter.variable} ${jetbrainsMono.variable} font-sans min-h-screen flex flex-col bg-background text-foreground`}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
-          <ResearchProvider>
-            <div className="relative flex min-h-screen flex-col bg-cosmic-void">
-              <main className="flex-1 w-full">{children}</main>
-              <Footer />
+          <AuthProvider>
+            <ResearchProvider>
+              <div className="relative flex min-h-screen flex-col bg-cosmic-void">
+                <main className="flex-1 w-full">{children}</main>
+                <Footer />
               <CommandMenu />
               <Toaster position="bottom-right" richColors theme="dark" />
             </div>
           </ResearchProvider>
+          </AuthProvider>
         </ThemeProvider>
       </body>
     </html>

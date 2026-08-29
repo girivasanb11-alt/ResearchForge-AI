@@ -73,10 +73,8 @@ export function ParticleWaveCanvas() {
     const initialBaseZ = new Float32Array(numWaveParticles);
 
     // Exact reference palette
-    const colorViolet = new THREE.Color("#8B5CF6");    // Electric Violet
     const colorDeepPurple = new THREE.Color("#7C3AED"); // Deep Purple
     const colorNeonBlue = new THREE.Color("#38BDF8");   // Neon Blue
-    const colorCyan = new THREE.Color("#22D3EE");       // Cyan
     const colorMagenta = new THREE.Color("#D946EF");    // Magenta
     const tempColor = new THREE.Color();
 
