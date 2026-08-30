@@ -70,14 +70,14 @@ export function CosmicDust({ count = 10000 }: CosmicDustProps) {
         fragmentShader={`
           varying vec3 vColor;
           void main() {
-            // Soft circular glow for particles
             vec2 xy = gl_PointCoord.xy - vec2(0.5);
             float ll = length(xy);
-            if(ll > 0.5) discard;
-            // Radial gradient glow
-            float alpha = (0.5 - ll) * 2.0;
-            // Enhance the color glow
-            gl_FragColor = vec4(vColor * 1.5, alpha * 0.8);
+            
+            // Crisp anti-aliased circle
+            float alpha = smoothstep(0.5, 0.45, ll);
+            if (alpha < 0.01) discard;
+            
+            gl_FragColor = vec4(vColor * 1.5, alpha);
           }
         `}
       />

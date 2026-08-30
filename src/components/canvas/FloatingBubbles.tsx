@@ -40,11 +40,12 @@ export function FloatingBubbles({ count = 12 }: FloatingBubblesProps) {
               backside
               backsideThickness={data.scale * 3}
               thickness={data.scale * 1.5}
-              chromaticAberration={0.15}
-              transmission={1.2}
-              roughness={0.02}
+              chromaticAberration={0.2}
+              transmission={1.0}
+              roughness={0.0}
               ior={1.5}
               clearcoat={1}
+              clearcoatRoughness={0.0}
               color={data.color}
               transparent
               opacity={0.9}

@@ -4,8 +4,8 @@ import React, { useRef, useMemo } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 
-const AMOUNT_X = 120;
-const AMOUNT_Y = 120;
+const AMOUNT_X = 150;
+const AMOUNT_Y = 150;
 
 export function ParticleTerrain() {
   const pointsRef = useRef<THREE.Points>(null);
@@ -21,10 +21,10 @@ export function ParticleTerrain() {
     let i = 0;
     for (let ix = 0; ix < AMOUNT_X; ix++) {
       for (let iy = 0; iy < AMOUNT_Y; iy++) {
-        // Space out particles
-        positions[i * 3] = ix * 0.4 - (AMOUNT_X * 0.4) / 2;
+        // Space out particles tighter for a dense point cloud
+        positions[i * 3] = ix * 0.3 - (AMOUNT_X * 0.3) / 2;
         positions[i * 3 + 1] = 0;
-        positions[i * 3 + 2] = iy * 0.4 - (AMOUNT_Y * 0.4) / 2;
+        positions[i * 3 + 2] = iy * 0.3 - (AMOUNT_Y * 0.3) / 2;
 
         // Gradient based on X position to simulate a data flow
         const mixRatio = ix / AMOUNT_X;
@@ -75,10 +75,10 @@ export function ParticleTerrain() {
         />
       </bufferGeometry>
       <pointsMaterial
-        size={0.12}
+        size={0.06}
         vertexColors
         transparent
-        opacity={0.8}
+        opacity={0.9}
         sizeAttenuation={true}
         blending={THREE.AdditiveBlending}
         depthWrite={false}

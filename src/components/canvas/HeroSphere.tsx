@@ -72,17 +72,17 @@ export function HeroSphere() {
           backsideThickness={1.5}
           samples={16}
           resolution={1024}
-          transmission={1.2}
-          roughness={0.05}
-          thickness={1}
-          ior={1.3}
-          chromaticAberration={0.1}
-          anisotropy={0.5}
+          transmission={1.0}
+          roughness={0.0}
+          thickness={1.2}
+          ior={1.5}
+          chromaticAberration={0.15}
+          anisotropy={1.0}
           distortion={0.15}
           distortionScale={0.3}
           temporalDistortion={0.15}
           clearcoat={1}
-          clearcoatRoughness={0.1}
+          clearcoatRoughness={0.0}
           color="#C26CFF"
         />
       </Sphere>

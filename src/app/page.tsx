@@ -31,7 +31,7 @@ export default function LandingPage() {
   }, []);
 
   return (
-    <div className="relative min-h-screen bg-[#020617] text-white selection:bg-[#8A5BFF]/30 overflow-x-hidden font-sans">
+    <div className="relative min-h-screen bg-[#020617] text-white selection:bg-[#8A5BFF]/30 overflow-x-hidden font-sans antialiased">
       
       {/* 3D Cosmic Environment (R3F Pipeline) - Hero Background */}
       <div className="absolute top-0 left-0 w-full h-[120vh] z-0 overflow-hidden pointer-events-none">

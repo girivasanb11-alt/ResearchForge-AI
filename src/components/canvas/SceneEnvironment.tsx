@@ -37,8 +37,14 @@ export function SceneEnvironment() {
     <div className="absolute inset-0 z-0 bg-[#020617] pointer-events-none">
       <Canvas
         camera={{ position: [0, 0, 15], fov: 45 }}
-        gl={{ antialias: false, alpha: true, powerPreference: "high-performance" }}
-        dpr={[1, 1.5]}
+        gl={{ 
+          antialias: true, 
+          alpha: true, 
+          powerPreference: "high-performance",
+          toneMapping: THREE.ACESFilmicToneMapping,
+          toneMappingExposure: 1.2
+        }}
+        dpr={[1, 2]}
       >
         <color attach="background" args={["#020617"]} />
         <fogExp2 attach="fog" args={["#020617", 0.04]} />
@@ -47,17 +53,18 @@ export function SceneEnvironment() {
         <CameraRig />
 
         {/* Cinematic Lighting */}
-        <ambientLight intensity={0.2} />
-        <directionalLight position={[-10, 10, 5]} intensity={1.5} color="#8A5BFF" />
-        <spotLight position={[10, 5, 10]} intensity={3} color="#00D8FF" angle={0.5} penumbra={1} />
-        <pointLight position={[0, -10, 0]} intensity={2} color="#FF5FD7" />
+        <ambientLight intensity={0.4} />
+        <directionalLight position={[-10, 10, 5]} intensity={2.5} color="#8A5BFF" />
+        <spotLight position={[10, 5, 10]} intensity={4} color="#00D8FF" angle={0.6} penumbra={0.8} />
+        <pointLight position={[0, -10, 0]} intensity={2.5} color="#FF5FD7" />
         
-        <Environment preset="city" />
+        {/* High contrast environment for sharper reflections */}
+        <Environment preset="studio" />
 
         <Suspense fallback={null}>
           <Stars radius={100} depth={50} count={3000} factor={4} saturation={0} fade speed={1} />
           
-          <CosmicDust count={10000} />
+          <CosmicDust count={12000} />
           <FloatingBubbles count={12} />
 
           <Float speed={1.5} rotationIntensity={0.5} floatIntensity={0.8} position={[4, 0, -2]}>
@@ -66,28 +73,28 @@ export function SceneEnvironment() {
           
           <ParticleTerrain />
 
-          {/* Premium Post-Processing Pipeline */}
+          {/* Premium Post-Processing Pipeline - Tightened for sharpness */}
           <EffectComposer>
             <DepthOfField 
               target={[0, 0, 0]}
               focalLength={0.02} 
-              bokehScale={2} 
+              bokehScale={1.5} 
               height={480} 
             />
             <Bloom 
-              luminanceThreshold={0.5} 
-              luminanceSmoothing={0.9} 
-              intensity={1.2} 
+              luminanceThreshold={0.9} 
+              luminanceSmoothing={0.1} 
+              intensity={0.8} 
               mipmapBlur 
             />
             <ChromaticAberration 
               blendFunction={BlendFunction.NORMAL} 
-              offset={new THREE.Vector2(0.002, 0.002)} 
+              offset={new THREE.Vector2(0.001, 0.001)} 
             />
             <Vignette 
               eskil={false} 
-              offset={0.1} 
-              darkness={1.1} 
+              offset={0.15} 
+              darkness={1.2} 
             />
           </EffectComposer>
 
