@@ -8,9 +8,9 @@ import { ArrowRight } from "lucide-react";
 
 export function FinalCTASection() {
   return (
-    <section className="relative z-20 py-32 bg-[#050816] overflow-hidden">
+    <section className="relative z-20 py-32 bg-transparent overflow-hidden border-t border-white/5">
       {/* Background Glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#8A5BFF] opacity-[0.07] blur-[120px] rounded-full pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#1D7CFF] opacity-[0.07] blur-[120px] rounded-full pointer-events-none" />
       
       <div className="max-w-4xl mx-auto px-6 relative z-10 text-center">
         <motion.h2 
@@ -19,7 +19,7 @@ export function FinalCTASection() {
           viewport={{ once: true }}
           className="text-5xl md:text-6xl font-extrabold text-white mb-8 tracking-tighter"
         >
-          Start Your <span className="bg-gradient-to-r from-[#00D8FF] via-[#00BFFF] to-[#8A5BFF] bg-clip-text text-transparent">Autonomous</span> Journey
+          Start Your <span className="bg-gradient-to-r from-[#1D7CFF] via-[#8B5CF6] to-[#A855F7] bg-clip-text text-transparent">Autonomous</span> Journey
         </motion.h2>
         
         <motion.p 

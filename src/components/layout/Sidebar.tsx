@@ -82,9 +82,6 @@ export function Sidebar({ onOpenConnectRepo }: SidebarProps) {
             <span className="text-sm font-bold tracking-tight text-foreground font-sans">
               ResearchForge<span className="text-purple-400 font-mono">AI</span>
             </span>
-            <span className="text-[9px] font-mono text-muted-foreground uppercase tracking-wider">
-              TrueForge Agent Desk
-            </span>
           </div>
         </Link>
       </div>

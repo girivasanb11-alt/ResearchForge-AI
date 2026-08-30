@@ -12,7 +12,7 @@ const stats = [
 
 export function WhyResearchForgeSection() {
   return (
-    <section className="relative z-20 py-32 bg-[#020617] border-y border-white/5">
+    <section className="relative z-20 py-32 bg-transparent border-y border-white/5">
       <div className="absolute inset-0 bg-[url('/noise.png')] opacity-[0.03] mix-blend-overlay" />
       
       <div className="max-w-7xl mx-auto px-6 relative z-10">

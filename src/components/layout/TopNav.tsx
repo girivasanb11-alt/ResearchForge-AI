@@ -137,9 +137,6 @@ export function TopNav() {
                   <span className="text-xs font-semibold text-foreground leading-none">
                     {user.firstName} {user.lastName}
                   </span>
-                  <span className="text-[9px] font-mono text-purple-400 uppercase leading-none mt-0.5">
-                    {user.role}
-                  </span>
                 </div>
               </button>
 

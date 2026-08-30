@@ -17,10 +17,11 @@ export function NewResearchInput({ onStart, isLoading }: NewResearchInputProps) 
   const [showAdvanced, setShowAdvanced] = useState(false);
 
   const samplePrompts = [
-    "Research NVIDIA AI Strategy",
-    "Solid-State Battery Electrolyte Scaling",
-    "Multi-Agent LLM Orchestration in Enterprise",
-    "GLP-1 Oral Formulation Bioavailability",
+    { label: "NVIDIA Blackwell AI Strategy", query: "NVIDIA AI Strategy: Blackwell B200 Architecture & Enterprise Inference Monopolization" },
+    { label: "OpenAI Revenue Model & Capex", query: "OpenAI Revenue Model: Enterprise API Unit Economics & Frontier Inference Capex" },
+    { label: "Anthropic vs OpenAI Reasoning", query: "Anthropic vs OpenAI: Constitutional AI, Hybrid Reasoning & Enterprise Market Share" },
+    { label: "Tesla FSD v13 End-to-End VLA", query: "Tesla FSD v13: End-to-End Neural Networks & Hardware 4 Vision Transformers" },
+    { label: "Semiconductor CoWoS Packaging", query: "Global Semiconductor Supply Chain: TSMC CoWoS Capacity & High-NA EUV Deployment" },
   ];
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -38,9 +39,14 @@ export function NewResearchInput({ onStart, isLoading }: NewResearchInputProps) 
   return (
     <div className="rounded-3xl border border-border/80 bg-card/60 p-6 sm:p-8 backdrop-blur-xl shadow-2xl space-y-6">
       <div className="space-y-1.5">
-        <div className="flex items-center gap-2 text-xs font-mono text-purple-400 font-bold uppercase tracking-wider">
-          <Sparkles className="h-3.5 w-3.5" />
-          <span>TrueForge Multi-Agent Desk</span>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2 text-xs font-mono text-purple-400 font-bold uppercase tracking-wider">
+            <Sparkles className="h-3.5 w-3.5" />
+            <span>TrueForge Multi-Agent Desk</span>
+          </div>
+          <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-purple-500/10 text-purple-300 border border-purple-500/20">
+            Supabase DB Synced
+          </span>
         </div>
         <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground font-sans">
           Initialize Autonomous Investigation
@@ -63,18 +69,22 @@ export function NewResearchInput({ onStart, isLoading }: NewResearchInputProps) 
           />
         </div>
 
-        {/* Suggested Prompts Pills */}
-        <div className="space-y-1.5">
-          <div className="text-[11px] font-mono text-muted-foreground">Suggested topics:</div>
+        {/* 1-Click Hackathon Demo Investigations */}
+        <div className="space-y-2">
+          <div className="flex items-center justify-between text-[11px] font-mono text-muted-foreground">
+            <span>⚡ 1-Click Hackathon Demo Topics:</span>
+            <span className="text-purple-400 font-semibold">Pre-verified DOIs & Benchmarks</span>
+          </div>
           <div className="flex flex-wrap gap-2">
             {samplePrompts.map((p) => (
               <button
-                key={p}
+                key={p.label}
                 type="button"
-                onClick={() => setTopic(p)}
-                className="px-3 py-1.5 rounded-xl border border-border/60 bg-secondary/40 hover:bg-secondary hover:border-purple-500/40 text-xs font-mono text-muted-foreground hover:text-foreground transition-all"
+                onClick={() => setTopic(p.query)}
+                className="px-3 py-1.5 rounded-xl border border-purple-500/30 bg-purple-500/10 hover:bg-purple-500/20 hover:border-purple-400 text-xs font-mono text-purple-200 transition-all flex items-center gap-1.5"
               >
-                {p}
+                <Sparkles className="h-3 w-3 text-purple-400" />
+                <span>{p.label}</span>
               </button>
             ))}
           </div>

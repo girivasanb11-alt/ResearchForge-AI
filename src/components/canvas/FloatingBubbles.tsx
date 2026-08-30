@@ -10,18 +10,18 @@ interface FloatingBubblesProps {
 export function FloatingBubbles({ count = 12 }: FloatingBubblesProps) {
   // Generate random data for each bubble once
   const bubblesData = useMemo(() => {
+    const palette = ["#1D7CFF", "#8B5CF6", "#A855F7", "#00A6FF"];
     return Array.from({ length: count }, () => ({
       position: [
-        (Math.random() - 0.5) * 20,
-        (Math.random() - 0.5) * 15,
-        (Math.random() - 0.5) * 10 - 5
+        (Math.random() - 0.5) * 40, // Wider spread across global background
+        (Math.random() - 0.5) * 40,
+        (Math.random() - 0.5) * 20 - 5
       ] as [number, number, number],
-      scale: Math.random() * 0.8 + 0.2, // size between 0.2 and 1.0
-      speed: Math.random() * 2 + 1,
+      scale: Math.random() * 1.5 + 0.5, // slightly larger
+      speed: Math.random() * 1.5 + 0.5,
       rotationIntensity: Math.random() * 2,
       floatIntensity: Math.random() * 3 + 1,
-      // Color tint
-      color: Math.random() > 0.5 ? "#8A5BFF" : "#00D8FF"
+      color: palette[Math.floor(Math.random() * palette.length)]
     }));
   }, [count]);
 
@@ -35,12 +35,12 @@ export function FloatingBubbles({ count = 12 }: FloatingBubblesProps) {
           rotationIntensity={data.rotationIntensity} 
           floatIntensity={data.floatIntensity}
         >
-          <Sphere args={[data.scale, 32, 32]}>
+          <Sphere args={[data.scale, 64, 64]}> {/* Higher res sphere for cleaner glass */}
             <MeshTransmissionMaterial
               backside
               backsideThickness={data.scale * 3}
-              thickness={data.scale * 1.5}
-              chromaticAberration={0.2}
+              thickness={data.scale * 2.0} // Increased thickness for stronger refraction
+              chromaticAberration={0.4} // Higher chromatic aberration for iridescent feel
               transmission={1.0}
               roughness={0.0}
               ior={1.5}
@@ -48,17 +48,17 @@ export function FloatingBubbles({ count = 12 }: FloatingBubblesProps) {
               clearcoatRoughness={0.0}
               color={data.color}
               transparent
-              opacity={0.9}
+              opacity={0.8}
             />
           </Sphere>
           
           {/* Inner contained energy core */}
-          <Sphere args={[data.scale * 0.4, 16, 16]}>
+          <Sphere args={[data.scale * 0.3, 16, 16]}>
             <meshBasicMaterial 
-               color={data.color === "#8A5BFF" ? "#C26CFF" : "#00FFFF"} 
+               color={data.color} 
                wireframe 
                transparent 
-               opacity={0.3} 
+               opacity={0.2} 
             />
           </Sphere>
         </Float>

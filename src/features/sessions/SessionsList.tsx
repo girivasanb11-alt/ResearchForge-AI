@@ -47,7 +47,7 @@ export function SessionsList({ sessions, onDeleteSession }: SessionsListProps) {
             <div className="flex items-center gap-3 shrink-0">
               {session.reportId && (
                 <Link
-                  href={`/report/${session.reportId}`}
+                  href={`/dashboard/reports/${session.reportId}`}
                   className="flex items-center gap-1 text-xs font-mono text-purple-400 font-bold hover:text-purple-300 transition-colors group-hover:translate-x-0.5"
                 >
                   <span>View Dossier</span>

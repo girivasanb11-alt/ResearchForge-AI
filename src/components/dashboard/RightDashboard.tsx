@@ -129,28 +129,41 @@ export function RightDashboard() {
   return (
     <div className="rounded-3xl border border-[#1e293b] bg-[#070b14]/95 backdrop-blur-2xl shadow-2xl overflow-hidden flex flex-col md:flex-row text-foreground min-h-[780px]">
       {/* 1. Nested Sidebar */}
-      <aside className="w-full md:w-56 border-r border-[#1e293b]/80 bg-[#050811]/90 p-4 flex flex-col justify-between shrink-0 space-y-6">
+      <aside className="w-full md:w-[280px] border-r border-[#1e293b]/80 bg-[#050811]/90 p-6 flex flex-col justify-between shrink-0 space-y-8">
         {/* Brand Header */}
-        <div className="space-y-6">
-          <div className="px-2 pt-1">
-            <Logo textClassName="text-sm font-bold text-white tracking-tight" />
+        <div className="space-y-8">
+          <div className="pt-2">
+            <div className="flex items-center gap-3">
+              {/* Premium Logo Icon */}
+              <div className="relative flex items-center justify-center h-8 w-8 shrink-0">
+                <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full drop-shadow-md">
+                  <circle cx="10" cy="11" r="6" fill="#38BDF8" />
+                  <circle cx="22" cy="11" r="6" fill="#6366F1" fillOpacity="0.9" />
+                  <circle cx="16" cy="21" r="6" fill="#A855F7" />
+                </svg>
+              </div>
+              {/* Brand Name */}
+              <span className="text-[26px] font-[800] text-white tracking-[-0.02em] leading-none font-sans">
+                ResearchForge<span className="font-[700]">AI</span>
+              </span>
+            </div>
           </div>
 
           {/* Navigation Links */}
-          <nav className="space-y-1">
+          <nav className="space-y-2">
             {navItems.map((item) => {
               const Icon = item.icon;
               return (
                 <Link
                   key={item.label}
                   href={item.href}
-                  className={`flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium transition-all ${
+                  className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all ${
                     item.active
                       ? "bg-[#6366f1] text-white font-semibold shadow-md shadow-indigo-600/30"
                       : "text-slate-400 hover:text-white hover:bg-slate-800/40"
                   }`}
                 >
-                  <Icon className="h-4 w-4 shrink-0" />
+                  <Icon className="h-5 w-5 shrink-0" />
                   <span>{item.label}</span>
                 </Link>
               );
@@ -159,33 +172,32 @@ export function RightDashboard() {
         </div>
 
         {/* Bottom Area: Upgrade Card & Profile Pill */}
-        <div className="space-y-4 pt-4 border-t border-[#1e293b]/60">
+        <div className="space-y-6 pt-6 border-t border-[#1e293b]/60">
           {/* Upgrade Plan Card */}
-          <div className="rounded-2xl border border-[#1e293b] bg-[#0c1222]/80 p-3.5 space-y-2.5">
-            <div className="flex items-center gap-1.5 text-xs font-bold text-white font-sans">
-              <Shield className="h-3.5 w-3.5 text-purple-400" />
+          <div className="rounded-2xl border border-[#1e293b] bg-[#0c1222]/80 p-5 space-y-3">
+            <div className="flex items-center gap-2 text-sm font-bold text-white font-sans">
+              <Shield className="h-4 w-4 text-purple-400" />
               <span>Upgrade Plan</span>
             </div>
-            <p className="text-[10px] text-slate-400 font-sans leading-tight">
+            <p className="text-xs text-slate-400 font-sans leading-relaxed">
               Unlock advanced features and higher limits.
             </p>
-            <button className="w-full py-1.5 rounded-lg text-xs font-bold font-sans bg-[#6366f1] hover:bg-[#4f46e5] text-white transition-all shadow-sm">
+            <button className="w-full py-2.5 rounded-xl text-sm font-bold font-sans bg-[#6366f1] hover:bg-[#4f46e5] text-white transition-all shadow-sm mt-1">
               Upgrade Now
             </button>
           </div>
 
           {/* User Profile Pill */}
-          <div className="flex items-center justify-between p-1.5 rounded-xl hover:bg-slate-800/40 transition-all cursor-pointer">
-            <div className="flex items-center gap-2 min-w-0">
-              <div className="h-7 w-7 rounded-full bg-gradient-to-tr from-purple-500 to-indigo-500 text-white font-bold text-xs flex items-center justify-center shrink-0">
+          <div className="flex items-center justify-between p-3 rounded-2xl hover:bg-slate-800/40 transition-all cursor-pointer">
+            <div className="flex items-center gap-3 min-w-0">
+              <div className="h-10 w-10 rounded-full bg-gradient-to-tr from-[#A855F7] to-[#6366F1] text-white font-bold text-lg flex items-center justify-center shrink-0">
                 G
               </div>
-              <div className="min-w-0 text-left">
-                <p className="text-xs font-bold text-white truncate leading-tight">Girivasan B</p>
-                <p className="text-[10px] text-slate-500 truncate leading-tight">girivasan@email.com</p>
+              <div className="min-w-0 flex flex-col justify-center gap-[8px]">
+                <p className="text-[16px] font-[700] text-white truncate leading-none tracking-tight">GIRIVASAN B</p>
               </div>
             </div>
-            <ChevronDown className="h-3.5 w-3.5 text-slate-500 shrink-0" />
+            <ChevronDown className="h-4 w-4 text-slate-500 shrink-0 ml-2" />
           </div>
         </div>
       </aside>

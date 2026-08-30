@@ -13,11 +13,13 @@ import {
   ArrowLeft,
   Clock,
   Sparkles,
+  FileDown,
+  Loader2,
 } from "lucide-react";
 import { ResearchReport } from "@/types/research";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { downloadMarkdownReport, printPdfReport, exportReportToMarkdown } from "@/services/export-service";
+import { downloadMarkdownReport, printPdfReport, exportReportToMarkdown, downloadPdfReport } from "@/services/export-service";
 import { toast } from "sonner";
 
 interface ReportViewProps {
@@ -26,6 +28,7 @@ interface ReportViewProps {
 
 export function ReportView({ report }: ReportViewProps) {
   const [copied, setCopied] = useState(false);
+  const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
 
   const handleCopyMarkdown = () => {
     const md = exportReportToMarkdown(report);
@@ -35,13 +38,27 @@ export function ReportView({ report }: ReportViewProps) {
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const handleDownloadPdf = async () => {
+    setIsGeneratingPdf(true);
+    toast.info("Generating high-definition PDF dossier...");
+    try {
+      await downloadPdfReport(report);
+      toast.success("PDF Dossier downloaded successfully!");
+    } catch (err) {
+      console.error("PDF generation error:", err);
+      toast.error("Failed to generate PDF. You can use the Print / PDF option.");
+    } finally {
+      setIsGeneratingPdf(false);
+    }
+  };
+
   return (
     <article className="max-w-4xl mx-auto space-y-10">
       {/* Header Bar */}
       <div className="space-y-4 pb-6 border-b border-border/80">
         <div className="flex items-center justify-between">
           <Link
-            href="/reports"
+            href="/dashboard/reports"
             className="text-xs font-mono text-muted-foreground hover:text-foreground flex items-center gap-1.5 transition-colors"
           >
             <ArrowLeft className="h-3.5 w-3.5" />
@@ -73,11 +90,26 @@ export function ReportView({ report }: ReportViewProps) {
             <Button
               variant="glow"
               size="sm"
+              disabled={isGeneratingPdf}
+              onClick={handleDownloadPdf}
+              className="text-xs font-mono h-8 flex items-center gap-1.5 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white shadow-md shadow-indigo-500/20"
+            >
+              {isGeneratingPdf ? (
+                <Loader2 className="h-3.5 w-3.5 animate-spin" />
+              ) : (
+                <FileDown className="h-3.5 w-3.5" />
+              )}
+              <span>{isGeneratingPdf ? "Generating..." : "Download PDF"}</span>
+            </Button>
+
+            <Button
+              variant="outline"
+              size="sm"
               onClick={printPdfReport}
               className="text-xs font-mono h-8 flex items-center gap-1.5"
             >
               <Printer className="h-3.5 w-3.5" />
-              <span>Print / PDF</span>
+              <span>Print</span>
             </Button>
           </div>
         </div>

@@ -10,8 +10,11 @@ import { Button } from "@/components/ui/button";
 
 import { DashboardVisualizerSection } from "@/components/home/DashboardVisualizerSection";
 import { FeatureGridSection } from "@/components/home/FeatureGridSection";
-import { WorkflowTimelineSection } from "@/components/home/WorkflowTimelineSection";
+import { TemplatesShowcaseSection } from "@/components/home/TemplatesShowcaseSection";
 import { WhyResearchForgeSection } from "@/components/home/WhyResearchForgeSection";
+import { WorkflowTimelineSection } from "@/components/home/WorkflowTimelineSection";
+import { TestimonialsSection } from "@/components/home/TestimonialsSection";
+import { TrustSection } from "@/components/home/TrustSection";
 import { FinalCTASection } from "@/components/home/FinalCTASection";
 
 export default function LandingPage() {
@@ -31,13 +34,11 @@ export default function LandingPage() {
   }, []);
 
   return (
-    <div className="relative min-h-screen bg-[#020617] text-white selection:bg-[#8A5BFF]/30 overflow-x-hidden font-sans antialiased">
+    <div className="relative min-h-screen bg-transparent text-white selection:bg-[#1D7CFF]/30 overflow-x-hidden font-sans antialiased">
       
-      {/* 3D Cosmic Environment (R3F Pipeline) - Hero Background */}
-      <div className="absolute top-0 left-0 w-full h-[120vh] z-0 overflow-hidden pointer-events-none">
+      {/* GLOBAL 3D Cosmic Environment (R3F Pipeline) */}
+      <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none bg-[#020617]">
         <SceneEnvironment />
-        {/* Deep fade to black for smooth scrolling transition into normal DOM */}
-        <div className="absolute bottom-0 left-0 w-full h-64 bg-gradient-to-t from-[#020617] to-transparent" />
       </div>
 
       {/* Floating UI Layer */}
@@ -148,8 +149,11 @@ export default function LandingPage() {
         <div className="relative z-20">
           <DashboardVisualizerSection />
           <FeatureGridSection />
+          <TemplatesShowcaseSection />
           <WhyResearchForgeSection />
           <WorkflowTimelineSection />
+          <TrustSection />
+          <TestimonialsSection />
           <FinalCTASection />
         </div>
       </div>

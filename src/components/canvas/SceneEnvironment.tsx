@@ -34,7 +34,7 @@ function CameraRig() {
 
 export function SceneEnvironment() {
   return (
-    <div className="absolute inset-0 z-0 bg-[#020617] pointer-events-none">
+    <div className="absolute inset-0 z-0 pointer-events-none">
       <Canvas
         camera={{ position: [0, 0, 15], fov: 45 }}
         gl={{ 
@@ -44,7 +44,7 @@ export function SceneEnvironment() {
           toneMapping: THREE.ACESFilmicToneMapping,
           toneMappingExposure: 1.2
         }}
-        dpr={[1, 2]}
+        dpr={[1.25, 1.5]}
       >
         <color attach="background" args={["#020617"]} />
         <fogExp2 attach="fog" args={["#020617", 0.04]} />
@@ -52,11 +52,11 @@ export function SceneEnvironment() {
         {/* Camera interaction logic */}
         <CameraRig />
 
-        {/* Cinematic Lighting */}
+        {/* Cinematic Lighting - Updated Palette */}
         <ambientLight intensity={0.4} />
-        <directionalLight position={[-10, 10, 5]} intensity={2.5} color="#8A5BFF" />
-        <spotLight position={[10, 5, 10]} intensity={4} color="#00D8FF" angle={0.6} penumbra={0.8} />
-        <pointLight position={[0, -10, 0]} intensity={2.5} color="#FF5FD7" />
+        <directionalLight position={[-10, 10, 5]} intensity={2.5} color="#4F46E5" /> {/* Cosmic Indigo */}
+        <spotLight position={[10, 5, 10]} intensity={4} color="#1D7CFF" angle={0.6} penumbra={0.8} /> {/* Electric Blue */}
+        <pointLight position={[0, -10, 0]} intensity={2.5} color="#A855F7" /> {/* Neon Violet */}
         
         {/* High contrast environment for sharper reflections */}
         <Environment preset="studio" />
@@ -65,7 +65,7 @@ export function SceneEnvironment() {
           <Stars radius={100} depth={50} count={3000} factor={4} saturation={0} fade speed={1} />
           
           <CosmicDust count={12000} />
-          <FloatingBubbles count={12} />
+          <FloatingBubbles count={8} />
 
           <Float speed={1.5} rotationIntensity={0.5} floatIntensity={0.8} position={[4, 0, -2]}>
             <HeroSphere />

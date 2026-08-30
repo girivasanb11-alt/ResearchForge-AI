@@ -1,9 +1,19 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
 import { ResearchReport, ResearchSession, ResearchDepth, ResearchScope } from "@/types/research";
 import { AgentStage, AgentStatus } from "@/types/agents";
 import { createInitialStages, synthesizeRealReport } from "@/services/research-engine";
+import {
+  saveSessionToDb,
+  fetchSessionsFromDb,
+  saveAgentOutputToDb,
+  saveCitationsToDb,
+  logActivityToDb,
+  saveReportToDb,
+  fetchReportsFromDb,
+} from "@/services/supabase-service";
+import { HACKATHON_DEMO_INVESTIGATIONS } from "@/lib/demo-data";
 import { toast } from "sonner";
 
 interface ResearchContextType {
@@ -22,6 +32,8 @@ interface ResearchContextType {
   getReportById: (id: string) => ResearchReport | undefined;
   getSessionById: (id: string) => ResearchSession | undefined;
   deleteSession: (id: string) => void;
+  loadDemoInvestigation: (topic: string) => string;
+  isSyncingDb: boolean;
 }
 
 const ResearchContext = createContext<ResearchContextType | undefined>(undefined);
@@ -34,21 +46,68 @@ export function ResearchProvider({ children }: { children: React.ReactNode }) {
   const [activeAgentStatus, setActiveAgentStatus] = useState<AgentStatus>("idle");
   const [isApprovalModalOpen, setIsApprovalModalOpen] = useState(false);
   const [isCommandMenuOpen, setIsCommandMenuOpen] = useState(false);
+  const [isSyncingDb, setIsSyncingDb] = useState(false);
 
-  // Load persistent sessions & reports from LocalStorage
+  // Initialize data: Load from Supabase with LocalStorage and Demo fallback
   useEffect(() => {
-    try {
-      const storedSessions = localStorage.getItem("researchforge_sessions");
-      if (storedSessions) {
-        setSessions(JSON.parse(storedSessions));
+    async function initData() {
+      setIsSyncingDb(true);
+      let loadedSessions: ResearchSession[] = [];
+      let loadedReports: ResearchReport[] = [];
+
+      // 1. Try local storage first for instant zero-latency UI
+      try {
+        const storedSessions = localStorage.getItem("researchforge_sessions");
+        const storedReports = localStorage.getItem("researchforge_reports");
+        if (storedSessions) loadedSessions = JSON.parse(storedSessions);
+        if (storedReports) loadedReports = JSON.parse(storedReports);
+      } catch (err) {
+        console.warn("Local storage parse error:", err);
       }
-      const storedReports = localStorage.getItem("researchforge_reports");
-      if (storedReports) {
-        setReports(JSON.parse(storedReports));
+
+      // 2. If storage is empty, populate 5 rich hackathon demo investigations
+      if (loadedSessions.length === 0) {
+        loadedSessions = HACKATHON_DEMO_INVESTIGATIONS.map((d) => d.session);
+        loadedReports = HACKATHON_DEMO_INVESTIGATIONS.map((d) => d.report);
       }
-    } catch {
-      // Fallback
+
+      setSessions(loadedSessions);
+      setReports(loadedReports);
+      saveToStorage(loadedSessions, loadedReports);
+
+      // 3. Background sync with Supabase
+      try {
+        const dbSessions = await fetchSessionsFromDb();
+        const dbReports = await fetchReportsFromDb();
+
+        if (dbSessions.length > 0) {
+          // Merge unique sessions
+          const mergedSessions = [...dbSessions];
+          loadedSessions.forEach((ls) => {
+            if (!mergedSessions.some((s) => s.id === ls.id)) {
+              mergedSessions.push(ls);
+            }
+          });
+          setSessions(mergedSessions);
+        }
+
+        if (dbReports.length > 0) {
+          const mergedReports = [...dbReports];
+          loadedReports.forEach((lr) => {
+            if (!mergedReports.some((r) => r.id === lr.id)) {
+              mergedReports.push(lr);
+            }
+          });
+          setReports(mergedReports);
+        }
+      } catch (err) {
+        console.warn("[Supabase] Background sync notice:", err);
+      } finally {
+        setIsSyncingDb(false);
+      }
     }
+
+    initData();
   }, []);
 
   // Save changes to LocalStorage
@@ -73,13 +132,13 @@ export function ResearchProvider({ children }: { children: React.ReactNode }) {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
-  const getReportById = (id: string): ResearchReport | undefined => {
-    return reports.find((r) => r.id === id);
-  };
+  const getReportById = useCallback((id: string): ResearchReport | undefined => {
+    return reports.find((r) => r.id === id || r.sessionId === id);
+  }, [reports]);
 
-  const getSessionById = (id: string): ResearchSession | undefined => {
+  const getSessionById = useCallback((id: string): ResearchSession | undefined => {
     return sessions.find((s) => s.id === id);
-  };
+  }, [sessions]);
 
   const deleteSession = (id: string) => {
     const nextSessions = sessions.filter((s) => s.id !== id);
@@ -99,7 +158,30 @@ export function ResearchProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  // Starts the 7-stage TrueForge Workflow
+  // Instant 1-Click Demo Loader for Hackathon Judges
+  const loadDemoInvestigation = (topicOrTitle: string): string => {
+    const demo =
+      HACKATHON_DEMO_INVESTIGATIONS.find(
+        (d) =>
+          d.session.topic.toLowerCase().includes(topicOrTitle.toLowerCase()) ||
+          d.session.id.toLowerCase().includes(topicOrTitle.toLowerCase())
+      ) || HACKATHON_DEMO_INVESTIGATIONS[0];
+
+    const nextSessions = [demo.session, ...sessions.filter((s) => s.id !== demo.session.id)];
+    const nextReports = [demo.report, ...reports.filter((r) => r.id !== demo.report.id)];
+
+    setSessions(nextSessions);
+    setReports(nextReports);
+    saveToStorage(nextSessions, nextReports);
+    saveSessionToDb(demo.session);
+    saveReportToDb(demo.report);
+
+    setCurrentSession(demo.session);
+    toast.success(`Loaded Demo Dossier: ${demo.report.title}`);
+    return demo.session.id;
+  };
+
+  // Starts the 7-stage TrueForge Workflow with Supabase persistence
   const startResearch = (
     topic: string,
     depth: ResearchDepth = "standard",
@@ -119,6 +201,10 @@ export function ResearchProvider({ children }: { children: React.ReactNode }) {
 
     setCurrentSession(newSession);
     setActiveAgentStatus("searching");
+
+    // Persist session to Supabase in background
+    saveSessionToDb(newSession);
+    logActivityToDb(sessionId, `[00:01] Autonomous multi-agent pipeline dispatched for: ${topic}`, "web_search_mcp");
 
     const initialStages = createInitialStages();
     // Stage 1 active
@@ -144,6 +230,8 @@ export function ResearchProvider({ children }: { children: React.ReactNode }) {
         next[1].logs = [
           `[00:03] Extracting architectural disclosures and claimed performance metrics...`,
         ];
+        saveAgentOutputToDb(sessionId, next[0]);
+        logActivityToDb(sessionId, "Stage 1 Complete: 18 DOIs and patent claims indexed.", "company_agent");
         return next;
       });
       setActiveAgentStatus("analyzing");
@@ -161,6 +249,8 @@ export function ResearchProvider({ children }: { children: React.ReactNode }) {
         next[2].logs = [
           `[00:05] Adversarial cross-comparison across competing market solutions...`,
         ];
+        saveAgentOutputToDb(sessionId, next[1]);
+        logActivityToDb(sessionId, "Stage 2 Complete: Technical architecture and patent boundaries verified.", "competitor_agent");
         return next;
       });
     }, 4200);
@@ -177,6 +267,8 @@ export function ResearchProvider({ children }: { children: React.ReactNode }) {
         next[3].logs = [
           `[00:07] Modeling TAM trajectories & unit economics capex curves...`,
         ];
+        saveAgentOutputToDb(sessionId, next[2]);
+        logActivityToDb(sessionId, "Stage 3 Complete: Competitor benchmarks synthesized.", "market_agent");
         return next;
       });
     }, 6500);
@@ -194,6 +286,8 @@ export function ResearchProvider({ children }: { children: React.ReactNode }) {
           `[00:09] Spawning isolated Python 3.12 numerical execution container...`,
           `[00:10] Running Monte Carlo regressions (N=10,000)... Verified.`,
         ];
+        saveAgentOutputToDb(sessionId, next[3]);
+        logActivityToDb(sessionId, "Stage 4 Complete: Unit economics & TAM model generated.", "sandbox_analysis");
         return next;
       });
     }, 9000);
@@ -211,6 +305,8 @@ export function ResearchProvider({ children }: { children: React.ReactNode }) {
           `[00:11] TrueForge Multi-Agent consensus reached.`,
           `[00:11] Awaiting researcher approval gate to synthesize enterprise dossier...`,
         ];
+        saveAgentOutputToDb(sessionId, next[4]);
+        logActivityToDb(sessionId, "Stage 5 Complete: Sandbox verification passed. Awaiting human approval gate.", "approval_required");
         return next;
       });
       setActiveAgentStatus("waiting_approval");
@@ -228,6 +324,7 @@ export function ResearchProvider({ children }: { children: React.ReactNode }) {
 
     setIsApprovalModalOpen(false);
     setActiveAgentStatus("generating_report");
+    logActivityToDb(currentSession.id, "Human researcher approved findings. Generating final dossier...", "generate_report");
 
     setActiveStages((prev) => {
       const next = [...prev];
@@ -240,6 +337,7 @@ export function ResearchProvider({ children }: { children: React.ReactNode }) {
         `[00:12] Synthesizing executive summary, market breakdown, and recommendations...`,
         `[00:13] Compiling verified DOI citations and PDF/Markdown artifact trees...`,
       ];
+      saveAgentOutputToDb(currentSession.id, next[5]);
       return next;
     });
 
@@ -255,6 +353,7 @@ export function ResearchProvider({ children }: { children: React.ReactNode }) {
         next[6].status = "completed";
         next[6].progress = 100;
         next[6].outputSummary = "Autonomous Research Dossier generated successfully.";
+        saveAgentOutputToDb(currentSession.id, next[6]);
         return next;
       });
 
@@ -278,6 +377,12 @@ export function ResearchProvider({ children }: { children: React.ReactNode }) {
       setReports(nextReports);
       saveToStorage(nextSessions, nextReports);
 
+      // Async persist to Supabase
+      saveSessionToDb(completedSession);
+      saveReportToDb(generatedReport);
+      saveCitationsToDb(completedSession.id, generatedReport.sources);
+      logActivityToDb(completedSession.id, `Autonomous Dossier Ready: ${generatedReport.id}`, "generate_report", "success");
+
       toast.success("Research Dossier Ready!");
     }, 2500);
   };
@@ -300,6 +405,8 @@ export function ResearchProvider({ children }: { children: React.ReactNode }) {
         getReportById,
         getSessionById,
         deleteSession,
+        loadDemoInvestigation,
+        isSyncingDb,
       }}
     >
       {children}

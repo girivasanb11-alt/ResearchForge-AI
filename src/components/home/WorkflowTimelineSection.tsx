@@ -16,7 +16,7 @@ const steps = [
 
 export function WorkflowTimelineSection() {
   return (
-    <section className="relative z-20 py-32 bg-[#050816]">
+    <section className="relative z-20 py-32 bg-transparent">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-24">
           <motion.h2 
@@ -25,13 +25,13 @@ export function WorkflowTimelineSection() {
             viewport={{ once: true }}
             className="text-4xl md:text-5xl font-extrabold text-white mb-6"
           >
-            The Autonomous <span className="text-[#38BDF8]">Workflow</span>
+            The Autonomous <span className="text-[#1D7CFF]">Workflow</span>
           </motion.h2>
         </div>
 
         <div className="relative max-w-4xl mx-auto">
           {/* Connecting Line */}
-          <div className="absolute top-0 bottom-0 left-[27px] md:left-1/2 w-0.5 bg-gradient-to-b from-[#8A5BFF] via-[#06B6D4] to-[#7C3AED] opacity-30 md:-translate-x-1/2" />
+          <div className="absolute top-0 bottom-0 left-[27px] md:left-1/2 w-0.5 bg-gradient-to-b from-[#1D7CFF] via-[#8B5CF6] to-[#A855F7] opacity-50 md:-translate-x-1/2" />
 
           <div className="space-y-12">
             {steps.map((step, idx) => (
@@ -44,14 +44,14 @@ export function WorkflowTimelineSection() {
                 className={`relative flex items-center ${idx % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"}`}
               >
                 {/* Center Node */}
-                <div className="absolute left-0 md:left-1/2 w-14 h-14 bg-[#0A1024] border-2 border-[#38BDF8] rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(56,189,248,0.3)] md:-translate-x-1/2 z-10">
+                <div className="absolute left-0 md:left-1/2 w-14 h-14 bg-[#0A1024] border-2 border-[#1D7CFF] rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(29,124,255,0.4)] md:-translate-x-1/2 z-10">
                   <step.icon className="w-6 h-6 text-white" />
                 </div>
 
                 {/* Content Card */}
                 <div className="ml-20 md:ml-0 w-full md:w-1/2 p-6 md:px-12">
                   <div className={`bg-[#0A1024]/80 backdrop-blur-xl border border-white/5 p-8 rounded-3xl hover:border-[#8A5BFF]/40 transition-colors ${idx % 2 === 0 ? "md:mr-8" : "md:ml-8"}`}>
-                    <div className="text-[#38BDF8] text-sm font-bold mb-2 tracking-widest uppercase">Phase 0{idx + 1}</div>
+                    <div className="text-[#1D7CFF] text-sm font-bold mb-2 tracking-widest uppercase">Phase 0{idx + 1}</div>
                     <h3 className="text-2xl font-bold text-white mb-3">{step.title}</h3>
                     <p className="text-slate-400">{step.desc}</p>
                   </div>

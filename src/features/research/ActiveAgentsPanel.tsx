@@ -101,10 +101,10 @@ export function ActiveAgentsPanel() {
                   : "bg-secondary/20 border-border/40 opacity-60"
               }`}
             >
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
+              <div className="flex items-start justify-between gap-2">
+                <div className="flex items-start gap-2.5 min-w-0">
                   <div
-                    className={`h-7 w-7 rounded-lg flex items-center justify-center ${
+                    className={`h-7 w-7 rounded-lg shrink-0 flex items-center justify-center mt-0.5 ${
                       isRunning
                         ? "bg-purple-600 text-white animate-pulse"
                         : isWaiting
@@ -116,24 +116,24 @@ export function ActiveAgentsPanel() {
                   >
                     <Icon className="h-3.5 w-3.5" />
                   </div>
-                  <div className="text-left">
-                    <h5 className="text-xs font-bold text-foreground truncate">{agent.name}</h5>
-                    <span className="text-[10px] font-mono text-muted-foreground">{agent.role}</span>
+                  <div className="text-left min-w-0">
+                    <h5 className="text-xs font-bold text-foreground leading-tight">{agent.name}</h5>
+                    <span className="text-[10px] font-mono text-muted-foreground block leading-tight mt-0.5">{agent.role}</span>
                   </div>
                 </div>
 
                 {isRunning && (
-                  <span className="relative flex h-2 w-2">
+                  <span className="relative flex h-2 w-2 shrink-0 mt-1.5">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75" />
                     <span className="relative inline-flex rounded-full h-2 w-2 bg-purple-500" />
                   </span>
                 )}
               </div>
 
-              <div className="flex items-center justify-between text-[10px] font-mono pt-1 border-t border-border/40 text-muted-foreground">
-                <span>Status:</span>
+              <div className="flex items-center justify-between gap-2 text-[10px] font-mono pt-1.5 border-t border-border/40 text-muted-foreground mt-2">
+                <span className="shrink-0">Status:</span>
                 <span
-                  className={
+                  className={`truncate text-right ${
                     isRunning
                       ? "text-purple-400 font-bold"
                       : isWaiting
@@ -141,7 +141,7 @@ export function ActiveAgentsPanel() {
                       : isCompleted
                       ? "text-emerald-400 font-bold"
                       : "text-muted-foreground"
-                  }
+                  }`}
                 >
                   {stage ? stage.status.replace("_", " ") : "idle"}
                 </span>
