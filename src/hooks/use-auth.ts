@@ -34,11 +34,13 @@ export function useAuth() {
     }
   };
 
-  const loginWithEmail = async () => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const loginWithEmail = async (_email: string) => {
     toast.info("Email login is disabled. Please use Google OAuth.");
   };
 
-  const signup = async () => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const signup = async (_firstName: string, _lastName: string, _email: string) => {
     toast.info("Signups are restricted to Google OAuth currently.");
   };
 
